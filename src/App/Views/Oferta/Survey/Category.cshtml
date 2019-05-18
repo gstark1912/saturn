@@ -1,0 +1,50 @@
+﻿@model App.Models.Oferta.Survey.CategoryViewModel
+@{
+    ViewBag.Title = "Registrar Producto o servicio";
+}
+
+
+<form action="/OfertaSurvey/Survey" method="get" class="form-horizontal" role="form">
+<div class="container sat-spacing">
+    <div class="row">
+        <div class="sat-titlesOpening col-xs-12">
+            <h2>@ViewBag.Title</h2>
+            <h4 class="title-type">¿Qué tipo de software o servicio ofreces?</h4>
+        </div>
+
+        <ol class="breadcrumb sat-breadcrumb" style="background-color: white;">
+            <li class="active">Rubro</li>
+            <li>Registro</li>
+            <li>Fin</li>
+        </ol>
+    </div>
+    <div class="container sat-Ds sat-category">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Category, new { @class = "col-md-offset-3 col-md-2 text-right" })
+                    <div class="col-md-4">
+                        @Html.DropDownListFor(m => m.Category, Model.Categories, "Seleccione...", new { @id = "categorySelector", @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Category, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="row sat-rubro03">
+                    <input type="hidden" id="subCategories" name="subCategories" value="" />
+                    <div class="col-md-12 col-lg-12" id="subCategoriesTree"></div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <input type="submit" class="btn btn-primary pull-right" value="Registrar Producto/Servicio" />
+            </div>
+        </div>
+    </div>
+</div>
+</form>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Scripts/jstree.min.js")
+    @Scripts.Render("~/Scripts/Oferta/selectCategory.js")
+}

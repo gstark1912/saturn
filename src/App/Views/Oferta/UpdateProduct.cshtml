@@ -1,0 +1,40 @@
+﻿@{
+    ViewBag.Title = "Categorias del producto/servicio";
+}
+<div class="container sat-spacing">
+    <div class="row">
+        <div class="sat-titlesOpening col-xs-12">
+            <h2>@ViewBag.Title</h2>
+        </div>
+    </div>
+    <div class="row">
+    <div class="table-responsive col-md-offset-3 col-md-6 sat-Ds">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Categoría</th>
+                    <th style="min-width: 151px;">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (ViewBag.surveys != null)
+                {
+                    foreach (var survey in ViewBag.surveys)
+                    {
+                        <tr>
+                            <td>@survey.CategoryObj.Name</td>
+                            <td>
+                                @if (true) //(ViewBag.outdatedSurveys[survey.Id])
+                                {
+                                <a href="/Oferta/updateSurvey/@survey.Id" class="btn btn-info" role="button">Modificar</a>
+                                }
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+    </div>
+</div>
+

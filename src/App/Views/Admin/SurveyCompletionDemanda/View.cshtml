@@ -1,0 +1,134 @@
+﻿@{
+    ViewBag.Title = "Demanda";
+}
+
+<h2>@ViewBag.Title</h2>
+<hr />
+
+<div class="container">
+    <h4>Id: @ViewBag.SurveyCompletion.Identifier</h4>
+    <h4>Fecha: @ViewBag.SurveyCompletion.CreatedAt.ToString("dd/MM/yyyy")</h4>
+    <br />
+
+    <h4>Cliente</h4>
+
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <tr>
+                <th>Email</th>
+                <td>@ViewBag.Customer.Email</td>
+            </tr>
+            <tr>
+                <th>Nombre</th>
+                <td>@ViewBag.Customer.FirstName</td>
+            </tr>
+            <tr>
+                <th>Apellido</th>
+                <td>@ViewBag.Customer.LastName</td>
+            </tr>
+            <tr>
+                <th>Tipo Lector</th>
+                <td>@ViewBag.Customer.LectorType</td>
+            </tr>
+            <tr>
+                <th>Tipo de Compan&iacute;a</th>
+                <td>@ViewBag.Customer.CompanyType</td>
+            </tr>
+            <tr>
+                <th>Compan&iacute;a</th>
+                <td>@ViewBag.Customer.Company</td>
+            </tr>
+            <tr>
+                <th>Pa&iacute;s</th>
+                <td>@ViewBag.Customer.Conutry</td>
+            </tr>
+            <tr>
+                <th>Ciudad</th>
+                <td>@ViewBag.Customer.City</td>
+            </tr>
+            <tr>
+                <th>Sector</th>
+                <td>@ViewBag.Customer.Sector</td>
+            </tr>
+            <tr>
+                <th>Rol</th>
+                <td>@ViewBag.Customer.RoleInCompany</td>
+            </tr>
+            <tr>
+                <th>Area en la que se desempeña</th>
+                <td>@ViewBag.Customer.DeploymentArea</td>
+            </tr>
+            <tr>
+                <th>Software en uso</th>
+                <td>@ViewBag.Customer.SoftwareInUse</td>
+            </tr>
+            <tr>
+                <th>Tel&eacute;fono</th>
+                <td>@ViewBag.Customer.PhoneNumber</td>
+            </tr>
+        </table>
+    </div>
+
+    <br />
+    <h4>Ranking</h4>
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Posici&oacute;n</th>
+                    <th>Compan&iacute;a</th>
+                    <th>Producto/Servicio</th>
+                    <th>Ranking</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{int i = 1;}
+                @foreach (var item in ViewBag.Ranking)
+                {
+                    <tr>
+                        <td>@i</td>
+                        <td>@item.SurveyCompletionParentByOferta.Company.CompanyName</td>
+                        <td>@item.SurveyCompletionParentByOferta.Product.Name</td>
+                        <td>@item.Rank</td>
+                    </tr>
+                    i++;
+                }
+            </tbody>
+        </table>
+    </div>
+    <br />
+    <h4>Evaluaci&oacute;n</h4>
+    <div class="table-responsive">
+        @foreach (var survey in ViewBag.SurveyCompletion.SurveyCompletions)
+        {
+            <h3>@survey.CategoryObj.getFullName()</h3>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Pregunta</th>
+                        <th>Respuestas</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var question in survey.Questions)
+                    {
+                        <tr>
+                            <td>@question.Question</td>
+                            <td>
+                                @foreach (var answer in question.Answers)
+                                {
+                                    @answer.Answer
+                                    <br />
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

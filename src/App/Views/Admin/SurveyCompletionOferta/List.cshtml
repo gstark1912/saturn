@@ -1,0 +1,51 @@
+﻿@using Model.SurveyCompletion;
+
+@{
+    ViewBag.Title = "Oferta";
+}
+
+<h2>@ViewBag.Title</h2>
+<hr />
+
+<div class="container">
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Rubro</th>
+                    <th>Compan&iacute;a</th>
+                    <th>Producto/Servicio</th>
+                    <th>Fecha</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (SurveyCompletionParent item in ViewBag.SurveysCompletionParent)
+                {
+                    <tr>
+                        <td>@item.Identifier</td>
+                        @foreach (SurveyCompletion surveyCompletion in item.SurveyCompletions)
+                        {
+                            if(surveyCompletion.CategoryObj != null && surveyCompletion.CategoryObj.parentCategory == null)
+                            {
+                                <td>@surveyCompletion.CategoryObj.Name</td>
+                            }
+                        }
+                        <td>@item.Company.CompanyName</td>
+                        <td>@item.Product.Name</td>
+                        <td>@item.CreatedAt</td>
+                        <td>@item.Status</td>
+                        <td>
+                            <a href="/Admin/EvaluationCompletion/Oferta/View/@item.Id" class="btn btn-info" role="button">Ver</a>
+                            <a href="/Admin/EvaluationCompletion/Oferta/Update/@item.Id" class="btn btn-info" role="button">Editar</a>
+                            <a href="/Admin/EvaluationCompletion/Oferta/Delete/@item.Id" class="btn btn-info" role="button" onclick="return confirm('¿Está seguro/a que desea eliminar la evaluación?');">Eliminar</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+

@@ -1,0 +1,85 @@
+﻿@{
+    ViewBag.Title = "Plantillas de Evaluación";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="titles col-lg-6 col-md-6">
+            <h2>@ViewBag.Title</h2>
+            <h4 class="title-type">Evaluaciòn</h4>
+        </div>
+    </div>
+    <hr />
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <tbody>
+                <tr>
+                    <th class="alert-maker">Nombre</th>
+                    <td>@ViewBag.Survey.Category.getFullName()</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <br />
+    <h4>Evaluaci&oacute;n</h4>
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Pregunta Oferta</th>
+                    <th>Respuestas Oferta (Valor)</th>
+                    <th>Pregunta Demanda</th>
+                    <th>Respuestas Demanda (Valor)</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var question in ViewBag.Survey.Questions)
+                {
+                    if (!question.Old){ 
+                    <tr>
+                        <td>@question.SupplyQuestion</td>
+                        <td>
+                            @foreach (var answer in question.Answers)
+                            {
+                                @("- " + answer.showSupplyAnswer())
+                                <br />
+                            }
+                        </td>
+                        <td>@question.DemandQuestion</td>
+                        <td>
+                            @foreach (var answer in question.Answers)
+                            {
+                                @("- " + answer.showDemandAnswer())
+                                <br />
+                            }
+                        </td>
+                    </tr>
+                    }
+                }
+            </tbody>
+        </table>
+
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Subcategor&iacute;as</th>
+                    <th>Fecha de Creaci&oacute;n</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var subSurvey in ViewBag.SubSurveys)
+                {
+                    <tr>
+                        <td>@subSurvey.Category.Name</td>
+                        <td>@subSurvey.Category.CreatedAt</td>
+                        <td>
+                            <a href="/Admin/Evaluation/View/@subSurvey.Category.Id" class="btn btn-info" role="button">Ver</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+

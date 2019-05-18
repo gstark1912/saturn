@@ -1,0 +1,145 @@
+﻿@model App.Models.VendorViewModel
+@{
+    ViewBag.Title = "Registrar Proveedor";
+    string Argument = ViewBag.Argument;
+}
+
+<form method="post" id="formRegister" class="form-horizontal" action="RegisterVendorAndUser" role="form" enctype="multipart/form-data">
+    <div class="row">
+        <div class="titles col-lg-4 col-md-4">
+            <h2>@ViewBag.Title</h2>
+        </div>
+    </div>
+
+    <div class="container">
+        @Html.ValidationSummary()
+        <hr />
+        <div class="row" style="background-color:#faf6ff">
+            <ul class="nav nav-tabs">
+                <li class="active"><a data-toggle="tab" href="#home">Datos del usuario responsable</a></li>
+                <li><a data-toggle="tab" href="#menu1">Datos de la empresa</a></li>
+                </ul>
+
+            <div class="tab-content">
+                <div id="home" class="tab-pane fade in active">
+                    <div class="row col-lg-12" style="margin-top:20px">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.UserName, new { @class = "col-md-4 control-label text-left-important" })
+                                <div class="col-md-8">
+                                    @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", @id = "txtUserName" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.FirstName, new { @class = "col-md-4 control-label text-left-important" })
+                                <div class="col-md-8">
+                                    @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.LastName, new { @class = "col-md-4 control-label text-left-important" })
+                                <div class="col-md-8">
+                                    @Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.Password, new { @class = "col-md-4 control-label text-left-important" })
+                                <div class="col-md-8">
+                                    @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-4 control-label text-left-important" })
+                                <div class="col-md-8">
+                                    @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                        <div id="menu1" class="tab-pane fade">
+                            <div class="row col-lg-12" style="margin-top:20px">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.CompanyName, new { @class = "col-md-4 control-label text-left-important" })
+                                        <div class="col-md-8">
+                                            @Html.TextBoxFor(m => m.CompanyName, new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.CompanyDescription, new { @class = "col-md-4 control-label text-left-important" })
+                                        <div class="col-md-8">
+                                            @Html.TextAreaFor(m => m.CompanyDescription, new { @class = "form-control", @rows = 3 })
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.CompanyWebSite, new { @class = "col-md-4 control-label text-left-important" })
+                                        <div class="col-md-8">
+                                            @Html.TextBoxFor(m => m.CompanyWebSite, new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.CompanyCity, new { @class = "col-md-4 control-label text-left-important" })
+                                        <div class="col-md-8">
+                                            @Html.TextBoxFor(m => m.CompanyCity, new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.CompanyAddress, new { @class = "col-md-4 control-label text-left-important" })
+                                        <div class="col-md-8">
+                                            @Html.TextBoxFor(m => m.CompanyAddress, new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.CompanyPostalCode, new { @class = "col-md-4 control-label text-left-important" })
+                                        <div class="col-md-8">
+                                            @Html.TextBoxFor(m => m.CompanyPostalCode, new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.CompanyBranchOfficesIn, new { @class = "col-md-7 control-label text-left-important" })
+                                        <div class="col-md-5">
+                                            @Html.TextBoxFor(m => m.CompanyBranchOfficesIn, new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.CompanyFiscalStartDate, new { @class = "col-md-7 control-label text-left-important" })
+                                        <div class="col-md-5">
+                                            @Html.DropDownListFor(m => m.CompanyFiscalStartDate, Model.Months, "Seleccione...", new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.CompanyFiscalEndDate, new { @class = "col-md-7 control-label text-left-important" })
+                                        <div class="col-md-5">
+                                            @Html.DropDownListFor(m => m.CompanyFiscalEndDate, Model.Months, "Seleccione...", new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.CompanyPeopleInCompany, new { @class = "col-md-7 control-label text-left-important" })
+                                        <div class="col-md-5">
+                                            @Html.TextBoxFor(m => m.CompanyPeopleInCompany, new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="pull-right col-md-5">
+                                            <input type="submit" name="RegisterVendorAndUser" class="btn btn-primary pull-right" value="Continuar" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        
+    </div>
+</form>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Scripts/Oferta/Register.js")
+}

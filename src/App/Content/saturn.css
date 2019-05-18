@@ -1,0 +1,584 @@
+/* Saturn Css */
+
+@import url('https://fonts.googleapis.com/css?family=Lato:400,700');
+
+/*===================================================
+
+## General
+
+===================================================*/
+
+* {
+    font-family: 'Lato', sans-serif;
+}
+
+html {
+    height: 100%;
+    box-sizing: border-box;
+}
+
+p,
+ul,
+a {
+    font-size: 1em;
+    line-height: 1.5em;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+body {
+    padding: 0;
+    position: relative;
+    min-height: 100%;
+}
+
+.sat-instructivo {
+    position:absolute;
+    left:50%;
+    transform:translateX(-50%);
+    color:#000 !important;
+    bottom:30px;
+}
+
+.sat-instructivo:hover {
+    color:#f16767 !important;
+}
+
+.sat-btn {
+    font-size: 1.325em;
+    padding: 5px 10px;
+    background-color: #000;
+    /* width:120px; */
+    margin: 20px auto;
+    color: #fff;
+    border-radius: 5px;
+    transition: all 0.2s;
+}
+
+.sat-btn:hover {
+    color:#fff;
+    background-color: #2f2f2f;
+}
+
+.noPadding {
+    padding: 0 !important
+}
+
+.sat-spacing {
+    padding-top:5%;
+    padding-bottom:5%;
+}
+
+.sat-Ds {
+    -webkit-box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.25);
+    -moz-box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.25);
+    box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.25);
+}
+
+
+/*
+Selecciones en evaluacion
+*/
+
+.sat-multipleContainer option {
+    white-space:normal;
+    padding:10px 8px;
+}
+
+.sat-multipleContainer label {
+    font-size:16px;
+    line-height:22px;
+}
+
+.sat-multipleContainer select {
+    border:none;
+    -webkit-box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.25);
+    -moz-box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.25);
+    box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.25);
+    -webkit-transition: all 0.2s ease-in-out;
+    -moz-transition: all 0.2s ease-in-out;
+    -ms-transition: all 0.2s ease-in-out;
+    -o-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
+}
+
+.sat-multipleContainer select:focus {
+    outline:none;
+    transform:scale(1.03)
+}
+
+.sat-multipleContainer option:nth-child(even) {
+    background-color:#f5f5f5
+}
+
+/*
+Choosen Bs
+*/
+
+.chosen-container {
+    font-size:13px;
+}
+
+.chosen-container span {
+    font-size:13px;
+    line-height:16px !important;
+}
+
+/*
+Datos Personales
+*/
+
+.sat-datos .nav-tabs{
+    border:none;    
+}
+
+.sat-datos .nav-tabs .active a {
+    border:none !important;
+    border-bottom:2px solid #000 !important;
+    color:#000 !important;    
+}
+
+.sat-datos .nav-tabs li:not(.active) a {
+    border:none !important;
+    background-color:#fff;
+    margin:0;
+    color:#000 !important;
+}
+
+.sat-datos .nav-tabs li:not(.active) a:hover {
+    border:none !important;
+    background-color:#fff;
+    margin:0;
+    color:#f16767 !important;
+}
+
+/*--------------------------------------------------------------
+## Nav
+--------------------------------------------------------------*/
+
+.navbar-default {
+    background-color: #fff;
+    border: none;
+    margin: 0;
+    padding-bottom: 20px;
+    -webkit-box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.25);
+    -moz-box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.25);
+    box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.25);
+    z-index: 9;
+}
+
+.navbar-brand {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    top: 50%;
+}
+
+.navbar-brand img {
+    max-width: 200px;
+}
+
+.navbar-nav > li > a {
+    position: relative;
+    top: 10px;
+}
+
+.sat-multipleContainer .text-danger {
+    width:100% !important;
+    max-width:205px !important;
+    color:#f16767;
+}
+
+.sat-multipleContainer .text-danger:after {
+    content: "\2192";
+    text-align: left;
+    position: relative;
+    font-size: 18px;
+    color: #f16767;
+    left:-130px;
+    top:-30px;
+}
+
+/*--------------------------------------------------------------
+## Home
+--------------------------------------------------------------*/
+
+.sat-home {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: calc(100vh - 70px);
+    background-color: #f16767;
+    width:100%;
+    margin:0;
+}
+
+.sat-home .col-md-6 {
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    z-index: 9;
+    padding: 3%;
+
+}
+
+.sat-home h2 {
+    color: #fff;
+    font-weight: 800;
+}
+
+.sat-home p {
+    color: #fff;
+}
+
+canvas.particles-js-canvas-el {
+    position: absolute;
+    height:calc(100vh - 70px) !important;
+
+}
+
+/*--------------------------------------------------------------
+## Footer
+--------------------------------------------------------------*/
+
+footer {
+    background-color: #000;
+    z-index: 9;
+    position: absolute;
+    right: 0;
+    bottom: -50px;
+    left: 0;
+}
+
+#sat-footer {
+    background-color: #000;
+    color: #fff;
+    padding: 10px;
+    max-width: 1080px !important;
+    margin: auto;
+}
+
+#sat-footer span:nth-child(2) {
+    float: right;
+}
+
+/*===================================================
+
+## Usuario Final
+
+===================================================*/
+
+/*--------------------------------------------------------------
+## Rubro
+--------------------------------------------------------------*/
+
+.sat-titlesOpening {
+    text-align: center;
+    padding: 0 0 3% 0;
+}
+
+.sat-titlesOpening h2 {
+    font-size: 2em;
+}
+
+.sat-titlesOpening h3 {
+    font-size: 1.5em;
+}
+
+
+.sat-breadcrumb {
+    text-align: center !important;
+    margin: auto;
+    background-color: #fff0;
+    padding: 3% 0;
+}
+
+.breadcrumb .active {
+    font-weight: bold;
+    color: #fff;
+    padding: 10px;
+    border-radius: 50px;
+    background-color: #f16767;
+}
+
+.breadcrumb li {
+    padding: 0 10px;
+}
+
+.form-horizontal .container .row:nth-child(2) {
+    /* min-height:40vh; */
+}
+
+.sat-breadcrumb > li + li:before {
+    display: none;
+}
+
+.sat-rubro04 {
+    padding: 3% 0;
+    text-align: center;
+}
+
+/*
+* Js tree
+*/
+
+ul.jstree-container-ul.jstree-children.jstree-wholerow-ul.jstree-no-dots > li {
+    background-color: #fff !important;
+}
+
+ul.jstree-container-ul.jstree-children.jstree-wholerow-ul.jstree-no-dots li a {
+    width: 250px !important;
+    white-space: normal;
+    line-height: auto;
+    color: #666 !important;
+}
+
+.jstree-default .jstree-themeicon {
+    display: none !important;
+}
+
+.jstree-hovered {
+    background-color: #fff0 !important;
+}
+
+.jstree-wholerow {
+    display: none;
+}
+
+#subCategoriesTree > .jstree-children > li {
+    width: 25%;
+    height: 50px;
+    display: inline-block;
+}
+
+#subCategoriesTree > .jstree-children > .jstree-closed:after {
+    content: "Desplegable \2193";
+    text-align: left;
+    top: 20px;
+    position: relative;
+    left: -245px;
+    font-size: 13px;
+    color: #f16767;
+}
+
+#subCategoriesTree > .jstree-children > li > ul {
+    position: absolute;
+    background-color: #eaeaea;
+    left: ;
+    padding-left: 10px;
+    z-index: 8;
+    width: auto !important;
+    border-bottom: 3px solid red;
+}
+
+#subCategoriesTree > .jstree-children > li > ul * {
+    background-color: #eaeaea !important;
+}
+
+#subCategoriesTree > .jstree-children > li > ul > li > ul > li {
+    margin-left: 10px !important;
+}
+
+/*--------------------------------------------------------------
+## Evaluacion
+--------------------------------------------------------------*/
+
+.sat-mailSurvey > div:first-of-type {
+    height: calc(100vh);
+    display: flex;
+}
+
+.sat-mailSurvey .form-group.alert.alert-maker {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.sat-multipleContainer {
+    padding: 20px 0;
+}
+
+.sat-titleSurvey,
+.title-type {
+    text-align: center;
+}
+
+.sat-titleSurvey {
+    font-size: 2em;
+    background-color: #f16767;
+    padding: 10px 5px;
+    color: #fff;
+}
+
+.title-type {
+    font-size: 3em;
+}
+
+.sat-alertRegistro {
+    border-bottom:4px solid #f16767;
+    width:100%;
+    margin:auto;
+    font-size:18px;
+}
+
+/*===================================================
+
+## Proveedores
+
+===================================================*/
+
+/*--------------------------------------------------------------
+## Home
+--------------------------------------------------------------*/
+
+.homeProveedores {
+    height: calc(100vh - 110px);
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-align-content: center;
+    -ms-flex-line-pack: center;
+    align-content: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    background-color: #5d9de5;
+}
+
+.homeProveedores h1 {
+    padding-bottom: 40px;
+    color: #000;
+    font-weight: bold;
+    line-height: 1.3em;
+    font-size: 3em;
+}
+
+.sat-services {
+    padding: 40px 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    margin: 20px 0;
+}
+
+.sat-services h2 {
+    font-size: 23px;
+    margin: 0;
+    text-align: center;
+}
+
+.sat-services a {
+    color: #5d9de5;
+}
+
+.sat-services a:hover {
+    color: #000;
+}
+
+/*--------------------------------------------------------------
+## Registro de producto
+--------------------------------------------------------------*/
+
+.sat-RegistroSurvey .sat-hide {
+    display:none;
+}
+
+/*
+Cuerpo en el registro
+*/
+.sat-category,
+.sat-RegistroSurvey .tab-content {
+    padding:30px;
+}
+
+.sat-RegistroSurvey .nav li {
+    padding:20px;
+}
+
+.sat-RegistroSurvey .nav li.active {
+    font-weight:bold;
+}
+
+
+/*
+Datos - Paso 3
+*/
+
+.sat-RegistroSurvey .tab-pane .row:nth-child(2) h4 {
+    font-size: 2em;
+    background-color: #f16767;
+    padding: 10px 5px;
+    color: #fff;
+    text-align:center;
+}
+
+/*--------------------------------------------------------------
+## Media Queries
+--------------------------------------------------------------*/
+
+@media (min-width: 768px) {
+
+    .sat-home h2 {
+        font-size: 3em;
+    }
+
+    .sat-home p {
+        font-size: 1.325em;
+    }
+}
+
+
+
+@media (max-width:767px) {
+    #subCategoriesTree > .jstree-children > li {
+        width: 25%;
+        height: 50px;
+        display: block;
+        background-color:#fff !important
+    }
+
+    ul.jstree-container-ul.jstree-children.jstree-wholerow-ul.jstree-no-dots li,
+    ul.jstree-container-ul.jstree-children.jstree-wholerow-ul.jstree-no-dots li a  {
+        width: 100% !important;
+    }
+
+    ul.jstree-container-ul.jstree-children.jstree-wholerow-ul.jstree-no-dots li a,
+    #subCategoriesTree > .jstree-children > li > ul,
+    #subCategoriesTree > .jstree-children > li > ul > li *,
+    #subCategoriesTree > .jstree-children > li > ul * {
+        background-color:rgba(255, 255, 255, 0) !important;
+    }
+
+    #subCategoriesTree > .jstree-children > li > ul {
+        background-color:#f1f1f1 !important;
+    }
+
+    #subCategoriesTree > .jstree-children > li > ul {
+        width:100% !important;
+    }
+
+    #subCategoriesTree > .jstree-children > li > ul >li {
+
+    }
+
+}
+
+/*--------------------------------------------------------------
+## By Martin. For validation message propous, please do not change
+--------------------------------------------------------------*/
+
+.field-validation-valid {
+    display: none;
+}
+
+.validation-summary-valid {
+    display: none;
+}

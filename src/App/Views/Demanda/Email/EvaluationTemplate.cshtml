@@ -1,0 +1,256 @@
+﻿@model Model.SurveyCompletion.SurveyCompletionParent
+<html>
+<head>
+    <style>
+        body p {
+            font-size: 14px;
+        }
+
+        table {
+            width: 80%;
+            float: inherit;
+            margin-bottom: 20px;
+        }
+
+        .header {
+            width: 97px;
+        }
+
+        h2 {
+            font-size: 16px;
+        }
+
+        .table {
+            border-collapse: collapse;
+            border-spacing: 0;
+        }
+
+            .table.encuesta tr td {
+                word-wrap: break-word;
+            }
+
+            .table thead:first-child tr:first-child th {
+                border-top: 0;
+            }
+
+            .table thead tr th {
+                vertical-align: bottom;
+                border-bottom: 2px solid #dddddd;
+                text-align: left;
+            }
+
+            .table tbody tr td {
+                padding: 8px;
+                vertical-align: middle;
+                border-top: 1px solid #dddddd;
+            }
+
+            .table.encuesta tbody tr td {
+                width: 50%;
+            }
+
+        tbody {
+            display: table-row-group;
+            vertical-align: middle;
+            border-color: inherit;
+        }
+
+        tr {
+            display: table-row;
+            vertical-align: inherit;
+            border-color: inherit;
+        }
+    </style>
+    <title>INFORME DE EVALUACIÓN</title>
+</head>
+<body>
+    <div class="header">
+        <img src="~/Content/images/logo_small.png" />
+    </div>
+    <div>
+        <h2>
+            EVALUACIÓN: @Model.Identifier
+        </h2>
+        <p>
+            Fecha: @Model.CreatedAt.ToString("dd/MM/yyyy")
+        </p>
+
+        @{ if (Model.Company != null)
+            {
+                <h2>Compan&iacute;a</h2>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <tbody>
+                            <tr>
+                                <td>Nombre</td>
+                                <td>@Model.Company.CompanyName</td>
+                            </tr>
+                            <tr>
+                                <td>Descripci&oacute;n</td>
+                                <td>@Model.Company.CompanyDescription</td>
+                            </tr>
+                            <tr>
+                                <td>Web Site</td>
+                                <td><a href="@Model.Company.CompanyWebSite" target="_blank">@Model.Company.CompanyWebSite</a></td>
+                            </tr>
+                            <tr>
+                                <td>Logo</td>
+                                <td>
+                                    @if (Model.Company.CompanyLogo != null)
+                                    {
+                                        <img src="~/Content/images/logos/@Model.Company.CompanyLogo" width="75" style="margin-bottom: 10px;" />
+                                    }
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Pa&iacute;s</td>
+                                <td>@Model.Company.CompanyCountry</td>
+                            </tr>
+                            <tr>
+                                <td>Ciudad</td>
+                                <td>@Model.Company.CompanyCity</td>
+                            </tr>
+                            <tr>
+                                <td>Direcci&oacute;n</td>
+                                <td>@Model.Company.CompanyAddress</td>
+                            </tr>
+                            <tr>
+                                <td>C&oacute;digo Postal</td>
+                                <td>@Model.Company.CompanyPostalCode</td>
+                            </tr>
+                            <tr>
+                                <td>Sucursales en..</td>
+                                <td>@Model.Company.CompanyBranchOfficesIn</td>
+                            </tr>
+                            <tr>
+                                <td>Mes de inicio del Año fiscal</td>
+                                <td>@Model.Company.CompanyFiscalStartDate</td>
+                            </tr>
+                            <tr>
+                                <td>Mes de cierre del año fiscal</td>
+                                <td>@Model.Company.CompanyFiscalEndDate</td>
+                            </tr>
+                            <tr>
+                                <td>Personal total de la empresa</td>
+                                <td>@Model.Company.CompanyPeopleInCompany</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <br />
+                <h2>Contacto comercial</h2>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <tbody>
+                            <tr>
+                                <td>Nombre</td>
+                                <td>@Model.Product.ProductContact.FullName</td>
+                            </tr>
+                            <tr>
+                                <td>Cargo / Funci&oacute;n</td>
+                                <td>@Model.Product.ProductContact.Position</td>
+                            </tr>
+                            <tr>
+                                <td>Tel&eacute;fono</td>
+                                <td>@Model.Product.ProductContact.Phone</td>
+                            </tr>
+                            <tr>
+                                <td>Email</td>
+                                <td>@Model.Product.ProductContact.Email</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            } }
+
+        @*
+            <br />
+            <h2>Producto</h2>
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <tbody>
+                        <tr>
+                            <td>Nombre</td>
+                            <td>@Model.Product.Name</td>
+                        </tr>
+                        <tr>
+                            <td>Versi&oacute;n</td>
+                            <td>@Model.Product.Version</td>
+                        </tr>
+                        <tr>
+                            <td>Descripci&oacute;n</td>
+                            <td>@Model.Product.Description</td>
+                        </tr>
+                        <tr>
+                            <td>Web Site</td>
+                            <td><a href="@Model.Product.WebSite" target="_blank">@Model.Product.WebSite</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <br />
+            <h2>Contacto del producto</h2>
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <tbody>
+                        <tr>
+                            <td>Nombre</td>
+                            <td>@Model.Product.ProductContact.FullName</td>
+                        </tr>
+                        <tr>
+                            <td>Cargo / Funci&oacute;n</td>
+                            <td>@Model.Product.ProductContact.Position</td>
+                        </tr>
+                        <tr>
+                            <td>Tel&eacute;fono</td>
+                            <td>@Model.Product.ProductContact.Phone</td>
+                        </tr>
+                        <tr>
+                            <td>Email</td>
+                            <td>@Model.Product.ProductContact.Email</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        *@
+
+        <h2>Evaluaci&oacute;n</h2>
+        <div>
+            @foreach (var surveyCompletion in Model.SurveyCompletions)
+            {
+                <h2>@surveyCompletion.CategoryObj.getFullName()</h2>
+                <table class="table encuesta">
+                    <thead>
+                        <tr>
+                            <th>Pregunta</th>
+                            <th>Respuesta/s</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var question in surveyCompletion.Questions)
+                        {
+                            <tr>
+                                <td>
+                                    @question.Question
+                                </td>
+                                <td>
+                                    @{ int q = 1; }
+                                    @foreach (var answer in question.Answers)
+                                    {
+                                        @answer.Answer
+                                        if (q < question.Answers.Count() && question.Answers.Count() > 1)
+                                        {
+                                            @:/
+                                }
+                                        q++;
+                                    }
+                                </td>
+                            </tr>
+                                        }
+                    </tbody>
+                </table>
+                                        }
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,33 @@
+﻿@model App.Models.Survey.QuestionViewModel
+@{
+    var required = Model.Required ? "required" : "";
+    var name = "surveyCompletionDTOs[" + Model.Identifier + "].Answers";
+    var chosenAnswer = Model.ChosenAnswers.FirstOrDefault();
+}
+<div class="form-group">
+    <label class="col-md-10 control-label text-left-important">@Model.Question</label>
+    <div class="col-md-10">
+        <select name="surveyCompletionDTOs[@Model.Identifier].Answers" @required class="form-control">
+            <option value="">Seleccione..</option>
+            @foreach (var answer in Model.Answers)
+            {
+                if (chosenAnswer != null)
+                {
+                    if (chosenAnswer.Answer == answer.Answer)
+                    {
+                        <option value="@answer.Id" selected>@answer.Answer</option>
+                    }
+                    else
+                    {
+                        <option value="@answer.Id">@answer.Answer</option>
+                    }
+                }
+                else
+                {
+                    <option value="@answer.Id">@answer.Answer</option>
+                }
+            }
+        </select>
+        @Html.ValidationMessage((string)name, "Campo requerido")
+    </div>
+</div>

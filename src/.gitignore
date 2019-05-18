@@ -1,0 +1,8 @@
+*.suo
+/App/obj
+/App/bin
+/Model/bin
+/Model/obj
+/Services/bin
+/Services/obj
+/packages

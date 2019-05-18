@@ -1,0 +1,237 @@
+﻿@model App.Models.Survey.RegisterViewModel
+@{
+    ViewBag.Title = "Obtener Recomendación";
+}
+
+<form action="/Evaluation/Registration" method="post" class="form-horizontal" role="form" novalidate="novalidate">
+    <div class="container sat-spacing">
+        <div class="row">
+            <div class="sat-titlesOpening col-xs-12">
+                <h2>Registro</h2>
+            </div>
+            <ol class="breadcrumb sat-breadcrumb" style="background-color: white;">
+                <li>Rubro</li>
+                <li>Evaluación</li>
+                <li class="active">Registro</li>
+                <li>Fin</li>
+            </ol>
+        </div>
+        <div class="row ">
+            <div class="col-md-offset-3 col-md-6 alert alert-maker text-center">
+                <p class="sat-alertRegistro">Solo te pediremos estos datos una única vez</p>
+            </div>
+        </div>
+
+        <input type="hidden" value="@ViewBag.SurveyId" name="surveyId" />
+
+        <div class="row sat-Ds sat-spacing">
+
+            <!-- Comienzo Tabs -->
+            <div class="container sat-RegistroSurvey">
+                <div class="row">
+                    <ul class="nav nav-tabs sat-hide">
+                        <li class="active" data-toggle="tab">1. Datos del Producto/Servicio</li>
+                        <li data-toggle="tab">2. Datos del contacto del Producto/Servicio</li>
+                        <li data-toggle="tab">3. Cuestionario sobre el Producto/Servicio</li>
+                    </ul>
+                    <div class="tab-content container">
+                        @Html.ValidationSummary()
+                        <!-- Tab User -->
+                        <div id="tab1" class="tab-pane tab-pane fade in active">
+                            <div class="row nav-RegistroFalse">
+                                <div class="col-md-12 text-center">
+                                    <h4>Paso 1 de 2</h4>
+                                    <p>Sobre usted</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-offset-4 col-md-4">
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <!-- Form -->
+                                            @Html.HiddenFor(x => x.Email)
+                                            <div class="form-group">
+                                                @Html.LabelFor(m => m.Email, new { @class = "col-md-10  " })
+                                                <div class="col-md-10">
+                                                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @disabled = "true" })
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                @Html.LabelFor(m => m.FirstName, new { @class = "col-md-10  " })
+                                                <div class="col-md-10">
+                                                    @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" })
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                @Html.LabelFor(m => m.LastName, new { @class = "col-md-10  " })
+                                                <div class="col-md-10">
+                                                    @Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                @Html.LabelFor(m => m.DeploymentArea, new { @class = "col-md-10  " })
+                                                <div class="col-md-10">
+                                                    @Html.DropDownListFor(m => m.DeploymentArea, Model.DeploymentAreas, "Seleccione...", new { @class = "form-control" })
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                @Html.LabelFor(m => m.RoleInCompany, new { @class = "col-md-10  " })
+                                                <div class="col-md-10">
+                                                    @Html.DropDownListFor(m => m.RoleInCompany, Model.RolesInCompany, "Seleccione...", new { @class = "form-control" })
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                @Html.LabelFor(m => m.LectorType, new { @class = "col-md-10  " })
+                                                <div class="col-md-10">
+                                                    @Html.DropDownListFor(m => m.LectorType, Model.LectorTypes, "Seleccione...", new { @class = "form-control" })
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                @Html.LabelFor(m => m.Country, new { @class = "col-md-10  " })
+                                                <div class="col-md-10">
+                                                    @Html.DropDownListFor(m => m.Country, Model.Countries, "Seleccione...", new { @class = "form-control" })
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                @Html.LabelFor(m => m.City, new { @class = "col-md-10  " })
+                                                <div class="col-md-10">
+                                                    @Html.TextBoxFor(m => m.City, new { @class = "form-control" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12 text-center">
+                                        <a class="sat-btn pull-right" href="#tab2" data-toggle="tab">Siguiente</a>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <!-- End Tab User -->
+                        <!-- Tab Empresa -->
+                        <div id="tab2" class="tab-pane fade">
+                            <div class="row nav-RegistroFalse">
+                                <div class="col-md-12 text-center">
+                                    <h4>Paso 2 de 2</h4>
+                                    <p>Sobre la empresa</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-offset-4 col-md-4">
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <!-- Form -->
+                                            <div class="form-group">
+                                                @Html.LabelFor(m => m.Company, new { @class = "col-md-10  " })
+                                                <div class="col-md-10">
+                                                    @Html.TextBoxFor(m => m.Company, new { @class = "form-control" })
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                @Html.LabelFor(m => m.CompanyType, new { @class = "col-md-10  " })
+                                                <div class="col-md-10">
+                                                    @Html.DropDownListFor(m => m.CompanyType, Model.CompanyTypes, "Seleccione...", new { @class = "form-control" })
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                @Html.LabelFor(m => m.Sector, new { @class = "col-md-10  " })
+                                                <div class="col-md-10">
+                                                    @Html.DropDownListFor(m => m.Sector, Model.Sectors, "Seleccione...", new { @class = "form-control" })
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                @Html.LabelFor(m => m.SoftwareInUse, new { @class = "col-md-10  " })
+                                                <div class="col-md-10">
+                                                    @Html.TextBoxFor(m => m.SoftwareInUse, new { @class = "form-control" })
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                @Html.LabelFor(m => m.Phone, new { @class = "col-md-10  " })
+                                                <div class="col-md-10">
+                                                    @Html.TextBoxFor(m => m.Phone, new { @class = "form-control" })
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                @Html.LabelFor(m => m.PeopleInCompany, new { @class = "col-md-10  " })
+                                                <div class="col-md-10">
+                                                    @Html.TextBoxFor(m => m.PeopleInCompany, new { @class = "form-control" })
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                @Html.LabelFor(m => m.AnnualBilling, new { @class = "col-md-10  " }) (USD)
+                                                <div class="col-md-10">
+                                                    @Html.TextBoxFor(m => m.AnnualBilling, new { @class = "form-control" })
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                @Html.LabelFor(m => m.Budget, new { @class = "col-md-10  " }) (USD)
+                                                <div class="col-md-10">
+                                                    @Html.TextBoxFor(m => m.Budget, new { @class = "form-control" })
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="col-md-12">
+                                                    <input type="checkbox" id="termsAndConditions" name="termsAndConditions" data-val="true" data-msg="Debe aceptar los t&eacute;rminos y condiciones para continuar." required>
+                                                    <label>Acepto los <a data-toggle="modal" data-target="#termsModal">t&eacute;rminos y condiciones.</a></label>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="col-md-offset-2 col-md-10">
+                                                    <input type="submit" class="btn btn-default" value="Finalizar Evaluación" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12 text-center">
+                                        <a class="sat-btn pull-left" href="#tab1" data-toggle="tab">Atrás</a>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <!-- End Tab Empresa -->
+                    </div>
+                </div>
+            </div>
+            <!-- End Tabs -->
+
+
+            <div class="col-md-4 col-md-offset-1"></div>
+            <div class="col-md-4 col-md-offset-2"></div>
+        </div>
+    </div>
+</form>
+
+<!-- Terms and conditions modal -->
+<div class="modal fade" id="termsModal" tabindex="-1" role="dialog" aria-labelledby="Terms and conditions" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Terminos y Condiciones</h3>
+            </div>
+
+            <div class="modal-body">
+                @Html.Raw(File.ReadAllText(Server.MapPath("~/Content/terms.html")))
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="agreeButton" data-dismiss="modal" onclick="acceptTermsAndConditions();">Acepto</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function acceptTermsAndConditions() {
+        $("#termsAndConditions").prop('checked', false);
+        $("#termsAndConditions").prop('checked', true);
+    }
+</script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

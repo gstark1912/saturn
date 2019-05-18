@@ -1,0 +1,49 @@
+﻿@model App.Models.CheckVendorViewModel
+@{
+    ViewBag.Title = "Registrar Proveedor";
+    string Argument = ViewBag.Argument;
+}
+
+<br />
+<br />
+
+<form method="post" id="formRegister" class="form-horizontal" role="form" enctype="multipart/form-data">
+
+    <div class="container">
+        @Html.ValidationSummary()
+
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4 alert alert-show">
+                <h4 class=" title1">Datos del Proveedor</h4>
+                <hr />
+            
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label text-left-important" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @id = "txtEmail" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.CompanyCountry, new { @class = "col-md-2 control-label text-left-important" })
+                    <div class="col-md-10">
+                        @Html.DropDownListFor(m => m.CompanyCountry, Model.Countries, "Seleccione...", new { @class = "form-control" })
+                    </div>
+                </div>
+               
+                <hr />
+
+                <div class="form-group">
+                    <div class="col-md-offset-0 col-md-10">
+                        <input type="submit" name="CheckVendor" class="btn btn-primary" value="Continuar" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Scripts/Oferta/FirstRegister.js")
+    
+}

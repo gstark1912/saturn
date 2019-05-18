@@ -1,0 +1,84 @@
+﻿@model Model.Suvery.Question
+@{
+    ViewBag.Title = "Pregunta";
+}
+
+<form action="/Admin/Evaluation/EditQuestion" method="post" enctype="multipart/form-data">
+    <div class="row">
+        <div class="titles col-lg-6 col-md-6">
+            <h2>@ViewBag.Title</h2>
+            <h4 class="title-type">Editar</h4>
+        </div>
+    </div>    
+    <hr />
+    <div class="container">
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1 alert alert-maker">
+                @Html.ValidationSummary()
+
+                @Html.HiddenFor(x => x.Id)
+                @Html.HiddenFor(x => x.Survey.Id)
+                @Html.HiddenFor(x => x.Title)
+                <div class="row">
+                    <div class="form-group col-md-10">
+                        @Html.LabelFor(x => x.AnswerType, new { @class = "col-md-12 control-label text-left-important" })
+                        @Html.DropDownListFor(x => x.AnswerTypeId, (SelectList)ViewBag.AnswerTypesList)
+                    </div>
+                    <div class="form-group col-md-10">
+                        @Html.LabelFor(x => x.SupplyQuestion, new { @class = "col-md-12 control-label text-left-important" })
+                        @Html.TextBoxFor(x => x.SupplyQuestion, new { @class = "form-control" })
+                    </div>
+                    <div class="form-group col-md-10">
+                        @Html.LabelFor(x => x.DemandQuestion, new { @class = "col-md-12 control-label text-left-important" })
+                        @Html.TextBoxFor(x => x.DemandQuestion, new { @class = "form-control" })
+                    </div>
+                </div>
+
+                <table class="table table-hover">
+                    <thead>
+                        <tr class="alert-maker">
+                            <th class="">Valor</th>
+                            <th>Respuesta para la demanda</th>
+                            <th>Respuesta para la oferta</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableQuestions" >
+                        @{int i = 0; }
+                        @foreach (var answer in Model.Answers)
+                        {
+                            <tr id="answer_@i">
+                                <td><input type="hidden" id="id_@i" name="Answers[@i].Id" value="" /> 
+                                    <input type="text" id="value_@i" name="Answers[@i].Value" value="@answer.Value" /></td>
+                                <td><input type="text" id="demandAnswer_@i" name="Answers[@i].DemandAnswer" value="@answer.DemandAnswer" /></td>
+                                <td><input type="text" id="supplyAnswer_@i" name="Answers[@i].SupplyAnswer" value="@answer.SupplyAnswer" /></td>
+
+                                <td><a href="#delete_@i"id="delete_@i" class="btn btn-danger" value="@i">X</a></td>
+                            </tr>
+                            i++;
+                        }
+                        </tbody>
+                    <tfoot>
+                        <tr>
+                            <td><a href="#add" id="add" value="@i" class="btn btn-primary">Agregar respuesta</a></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </tfoot>
+                </table>
+
+                    <div class="form-group">
+                        <div>
+                            <input type="submit" class="btn btn-primary pull-right" value="Crear" />
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Scripts/Admin/EditQuestion.js")
+}

@@ -1,0 +1,139 @@
+﻿@model App.DTO.EvaluationReportTemplateDTO
+<html>
+    <head>
+        <style>
+           body p {
+                font-size:14px;
+            }
+
+            table {
+                width: 80%;
+                float: inherit;
+                margin-bottom: 20px;
+            }
+
+            .header {
+                width: 100%;
+            }
+
+            .logo {
+                width: 400px;
+            }
+
+            h2 {
+                font-size: 16px;
+            }
+
+            .table {
+                border-collapse: collapse;
+                border-spacing: 0;
+            }
+
+            .table.encuesta tr td {
+                word-wrap: break-word;
+            }
+
+            .table thead:first-child tr:first-child th {
+                    border-top: 0;
+            }
+
+            .table thead tr th {
+                vertical-align: bottom;
+                border-bottom: 2px solid #dddddd;
+                text-align: left;
+            }
+
+            .table tbody tr td {
+                padding: 8px;
+                vertical-align: middle;
+                border-top: 1px solid #dddddd;
+            }
+
+            .table.encuesta tbody tr td {
+                width: 50%;
+            }
+
+            tbody {
+                display: table-row-group;
+                vertical-align: middle;
+                border-color: inherit;
+            }
+
+            tr {
+                display: table-row;
+                vertical-align: inherit;
+                border-color: inherit;
+            }
+           
+        </style>
+        <title>INFORME DE EVALUACIÓN</title>        
+    </head>
+    <body>
+        <img class="logo" src="http://beta.evaluandoerp.com/Content/images/logo_big_right.png" />
+        <div>
+            <h2>
+                INFORME DE EVALUACIÓN @Model.SurveyCompletionParent.Identifier
+            </h2>
+            <p>
+                Fecha: @Model.SurveyCompletionParent.CreatedAt.ToString("dd/MM/yyyy")
+            </p>
+            <p>
+                Gracias por ingresar a Evaluando Software, el primer centro de evaluación de software empresarial de América Latina. No se han encontrado productos o servicios que cumplan con los requerimientos ingresados.
+            </p>
+            <p>
+                El proceso de evaluación que realiza Evaluando Software tiene en cuenta los requerimientos de su proyecto, de acuerdo a los datos que ingresa en el evaluador, y los compara contra una base de productos que podrá ver en el <a href="http://directorios.evaluandosoftware.com/">Directorio de Empresas</a>.
+            </p>
+            <p>
+                En el directorio se encuentran registrados más de 200 productos de software de gestión empresarial de América Latina. Para figurar en este directorio las empresas tuvieron que responder un exhaustivo cuestionario de más de 350 preguntas sobre el comportamiento del producto registrado en diferentes situaciones de uso.
+                <br />
+                El registro de empresas y su producto es GRATUITO. Si conoce alguna empresa de software que no está en el directorio, sugiérale registrarse.
+            </p>
+            <p>
+                <img src="http://beta.evaluandoerp.com/Content/images/product_certified.png" />
+                El sello de "Producto validado" indica que Evaluando Software constató la correspondencia entre lo que la documentación de registro del producto dice, y lo que el producto hace.
+                <br />
+                Todos los proveedores que figuran en el directorio participan gratuitamente de la evaluación de software sean o no anunciantes de Evaluando Software.
+            </p>
+            <p>
+                Además, cuenta con un Directorio de <a href="http://directorios.evaluandosoftware.com/">Consultores Software</a> que le podrán brindar apoyo en sus procesos organizacionales
+            </p>
+            <h2>DATOS INGRESADOS POR EL SOLICITANTE</h2>
+            <div>
+            @foreach(var surveyCompletion in Model.SurveyCompletionParent.SurveyCompletions)
+            { 
+                <h2>@surveyCompletion.CategoryObj.getFullName()</h2>
+                <table class="table encuesta">
+                    <thead>
+                        <tr>
+                            <th>Pregunta</th>
+                            <th>Respuesta/s</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var question in surveyCompletion.Questions)
+                    {
+                        <tr>
+                            <td>
+                                @question.Question
+                            </td>
+                            <td>
+                                @{ int q = 1; }
+                                @foreach (var answer in question.Answers)
+                                {
+                                    @answer.Answer
+                                    if (q < question.Answers.Count() && question.Answers.Count() > 1)
+                                    {
+                                        @:/
+                                }
+                                    q++;
+                                }
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            }
+            </div>
+        </div>
+    </body>
+</html>

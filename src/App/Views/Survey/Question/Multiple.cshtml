@@ -1,0 +1,32 @@
+﻿@model App.Models.Survey.QuestionViewModel
+@{
+    var required = Model.Required ? "required" : "";
+    var name = "surveyCompletionDTOs[" + Model.Identifier + "].Answers";
+    var chosenAnswers = Model.ChosenAnswers;
+}
+<div class="sat-multipleContainer">
+<label>@Model.Question</label>
+
+    <select name="@name" @required data-placeholder="Seleccione.." class="chosen-select" multiple tabindex="-1">
+        @foreach (var answer in Model.Answers)
+        {
+            if (chosenAnswers.Any())
+            {
+                if (chosenAnswers.Any(x => x.Answer == answer.Answer))
+                {
+                    <option value="@answer.Id" selected>@answer.Answer</option>
+                }
+                else
+                {
+                    <option value="@answer.Id">@answer.Answer</option>
+                }
+            }
+            else
+            {
+                <option value="@answer.Id">@answer.Answer</option>
+            }
+        }
+    </select>
+    @Html.ValidationMessage(name, "Campo requerido", new { @class = "text-danger" })
+</div>
+

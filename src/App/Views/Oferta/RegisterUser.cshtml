@@ -1,0 +1,72 @@
+﻿@model App.Models.UserViewModel
+@{
+    ViewBag.Title = "Registrar Usuario";
+    string Argument = ViewBag.Argument;
+}
+
+<h2>@ViewBag.Title</h2>
+
+<form method="post" class="form-horizontal" role="form" enctype="multipart/form-data">
+
+    <div class="container">
+        @Html.ValidationSummary()
+
+        <div class="row" style="background-color:#faf6ff">
+            <ul class="nav nav-tabs">
+                <li class="active"><a data-toggle="tab" href="#home">Datos del usuario responsable</a></li>
+            </ul>
+            <div class="tab-content">
+                <div id="home" class="tab-pane fade in active">
+                    <div class="row col-lg-12">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.UserName, new { @class = "col-md-4 control-label text-left-important" })
+                                <div class="col-md-8">
+                                    @Html.TextBoxFor(m => m.UserName, new { @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.FirstName, new { @class = "col-md-4 control-label text-left-important" })
+                                <div class="col-md-8">
+                                    @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.LastName, new { @class = "col-md-4 control-label text-left-important" })
+                                <div class="col-md-8">
+                                    @Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.Password, new { @class = "col-md-4 control-label text-left-important" })
+                                <div class="col-md-8">
+                                    @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-4 control-label text-left-important" })
+                                <div class="col-md-8">
+                                    @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
+                                </div>
+                            </div>
+                            <hr />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+            <div class="form-group">
+                <div class="col-md-12">
+                    <input type="submit" name="Register" class="btn btn-primary pull-right" value="Continuar" />
+                </div>
+            </div>
+    </div>
+</form>
+<script type="text/javascript" src="@Url.Content("~/Scripts/Oferta/Register.js")"></script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

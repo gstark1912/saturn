@@ -1,0 +1,139 @@
+﻿@model App.Models.Survey.RegisterViewModel
+@{
+    ViewBag.Title = "Demanda";
+}
+
+<h2>@ViewBag.Title</h2>
+<hr />
+
+<div class="container">
+    <h4>Id: @ViewBag.SurveyCompletion.Identifier</h4>
+    <h4>Fecha: @ViewBag.SurveyCompletion.CreatedAt.ToString("dd/MM/yyyy")</h4>
+    <br />
+
+    <h4>Cliente</h4>
+    <form action="/Admin/EvaluationCompletion/Demanda/Update/@ViewBag.SurveyCompletion.Id" method="post" class="form-horizontal" role="form" novalidate="novalidate" enctype="multipart/form-data" onsubmit="return confirm('Está seguro que desea guardar los cambios?');">
+        @Html.ValidationSummary()
+        
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <tr>
+                    <th>Email</th>
+                    <td>@Html.TextBoxFor(m => m.Email, new { @class = "form-control" })</td>
+                </tr>
+                <tr>
+                    <th>Nombre</th>
+                    <td>@Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" })</td>
+                </tr>
+                <tr>
+                    <th>Apellido</th>
+                    <td>@Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })</td>
+                </tr>
+                <tr>
+                    <th>Tipo Lector</th>
+                    <td>@Html.DropDownListFor(m => m.LectorType, Model.LectorTypes, "Seleccione...", new { @class = "form-control" })</td>
+                </tr>
+                <tr>
+                    <th>Tipo de Compan&iacute;a</th>
+                    <td>@Html.DropDownListFor(m => m.CompanyType, Model.CompanyTypes, "Seleccione...", new { @class = "form-control" })</td>
+                </tr>
+                <tr>
+                    <th>Compan&iacute;a</th>
+                    <td>@Html.TextBoxFor(m => m.Company, new { @class = "form-control" })</td>
+                </tr>
+                <tr>
+                    <th>Pa&iacute;s</th>
+                    <td>@Html.DropDownListFor(m => m.Country, Model.Countries, "Seleccione...", new { @class = "form-control" })</td>
+                </tr>
+                <tr>
+                    <th>Ciudad</th>
+                    <td>@Html.TextBoxFor(m => m.City, new { @class = "form-control" })</td>
+                </tr>
+                <tr>
+                    <th>Sector</th>
+                    <td>@Html.DropDownListFor(m => m.Sector, Model.Sectors, "Seleccione...", new { @class = "form-control" })</td>
+                </tr>
+                <tr>
+                    <th>Rol</th>
+                    <td>@Html.DropDownListFor(m => m.RoleInCompany, Model.RolesInCompany, "Seleccione...", new { @class = "form-control" })</td>
+                </tr>
+                <tr>
+                    <th>Area en la que se desempeña</th>
+                    <td>@Html.DropDownListFor(m => m.DeploymentArea, Model.DeploymentAreas, "Seleccione...", new { @class = "form-control" })</td>
+                </tr>
+                <tr>
+                    <th>Software en uso</th>
+                    <td>@Html.TextBoxFor(m => m.SoftwareInUse, new { @class = "form-control" })</td>
+                </tr>
+                <tr>
+                    <th>Tel&eacute;fono</th>
+                    <td>@Html.TextBoxFor(m => m.Phone, new { @class = "form-control" })</td>
+                </tr>
+            </table>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" class="btn btn-default" value="Guardar Cambios" />
+            </div>
+        </div>
+    </form>
+    <br />
+    <h4>Ranking</h4>
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Posici&oacute;n</th>
+                    <th>Compan&iacute;a</th>
+                    <th>Producto/Servicio</th>
+                    <th>Ranking</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{int i = 1;}
+                @foreach (var item in ViewBag.Ranking)
+                {
+                    <tr>
+                        <td>@i</td>
+                        <td>@item.SurveyCompletionSupply.Company.CompanyName</td>
+                        <td>@item.SurveyCompletionSupply.Company.ProductName</td>
+                        <td>@item.Rank</td>
+                    </tr>
+                    i++;
+                }
+            </tbody>
+        </table>
+    </div>
+    <br />
+    <h4>Evaluaci&oacute;n</h4>
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Pregunta</th>
+                    <th>Respuestas</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var question in ViewBag.SurveyCompletion.Questions)
+                {
+                    <tr>
+                        <td>@question.Question</td>
+                        <td>
+                            @foreach (var answer in question.Answers)
+                            {
+                                @answer.Answer
+                                <br />
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+

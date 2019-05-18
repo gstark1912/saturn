@@ -1,0 +1,45 @@
+﻿@{
+    ViewBag.Title = "Categorias del producto/servicio";
+}
+
+<div class="container sat-spacing">
+    <div class="row">
+        <div class="sat-titlesOpening col-xs-12">
+            <h2>@ViewBag.Title</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="table-responsive col-md-offset-3 col-md-6 sat-Ds">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Categoría</th>
+                        <th style="min-width: 151px;">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (ViewBag.surveys != null)
+                    {
+                        foreach (var survey in ViewBag.surveys)
+                        {
+                            <tr>
+                                <td>@survey.CategoryObj.Name</td>
+                                <td>
+                                    <a href="/Continue/Update?Category=@ViewBag.Category&ParentSurveyCompletionId=@ViewBag.ParentSurveyCompletionId&PartialSaveKey=@ViewBag.PartialSaveKey&SurveyCompletionId=@survey.Id" class="btn btn-info" role="button">Modificar</a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+            <form action="Continue/Save" method="POST">
+                <input type="hidden" name="Category" value="@ViewBag.Category">
+                <input type="hidden" name="ParentSurveyCompletionId" value="@ViewBag.ParentSurveyCompletionId">
+                <input type="hidden" name="PartialSaveKey" value="@ViewBag.PartialSaveKey">
+
+                <input type="submit" class="btn btn-primary pull-right" name="action:Save" value="Finalizar Evaluación" />
+                <input type="submit" class="btn btn-primary pull-right" name="action:SaveParcial" value="Guardar y continuar luego" />
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,48 @@
+﻿@{
+    ViewBag.Title = "Demanda";
+}
+
+<h2>@ViewBag.Title</h2>
+<hr />
+
+<div class="container">
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Rubro</th>
+                    <th>Cliente</th>
+                    <th>Email</th>
+                    <th>Tipo Lector</th>
+                    <th>Pres / Fact</th>
+                    <th>Pres / Empl</th>
+                    <th>Fact / Empl</th>
+                    <th>Fecha</th>
+                    <th style="min-width: 151px;">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var surveyCompletion in ViewBag.SurveysCompletion)
+                {
+                    <tr>
+                        <td>@surveyCompletion.Identifier</td>
+                        <td>@surveyCompletion.Category.Name</td>
+                        <td>@surveyCompletion.Customer.FirstName @surveyCompletion.Customer.LastName</td>
+                        <td>@surveyCompletion.Customer.Email</td>
+                        <td>@surveyCompletion.Customer.LectorType</td>
+                        <td>@surveyCompletion.Customer.BudgetOverBilling.ToString("N")</td>
+                        <td>@surveyCompletion.Customer.BudgetOverPeople.ToString("N")</td>
+                        <td>@surveyCompletion.Customer.BillingOverPeople.ToString("N")</td>
+                        <td>@surveyCompletion.CreatedAt</td>
+                        <td>
+                            <a href="/Admin/EvaluationCompletion/Demanda/View/@surveyCompletion.Id" class="btn btn-info" role="button">Ver</a>
+                            <!--<a href="/Admin/EvaluationCompletion/Demanda/Update/@surveyCompletion.Id" class="btn btn-info" role="button">Editar</a>-->
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+

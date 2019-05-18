@@ -1,0 +1,73 @@
+﻿@model App.Models.ContactViewModel
+@{
+    ViewBag.Title = "Contacto";
+}
+
+
+<form action="/Contact/Send" method="post" class="form-horizontal" role="form">
+    <div class="row">
+        <div class="titles col-lg-6 col-md-6">
+            <h2>@ViewBag.Title</h2>
+            <h4 class="title-type">Complete el formulario para comunicarse con nosotros</h4>
+        </div>
+    </div>
+    <hr />
+    @Html.ValidationSummary()
+
+    <input type="hidden" value="@ViewBag.SurveyId" name="surveyId" />
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-5 col-md-offset-1 alert alert-maker">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.FirstName, new { @class = "col-md-4 control-label text-left-important" })
+                    <div class="col-md-8">
+                        @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.LastName, new { @class = "col-md-4 control-label text-left-important" })
+                    <div class="col-md-8">
+                        @Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Company, new { @class = "col-md-4 control-label text-left-important" })
+                    <div class="col-md-8">
+                        @Html.TextBoxFor(m => m.Company, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Email, new { @class = "col-md-4 control-label text-left-important" })
+                    <div class="col-md-8">
+                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-5 col-md-offset-1 alert alert-maker" >
+                
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Reason, new { @class = "col-md-5 control-label text-left-important" })
+                    <div class="col-md-7">
+                        @Html.TextBoxFor(m => m.Reason, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Message, new { @class = "col-md-5 control-label text-left-important" })
+                    <div class="col-md-7">
+                        @Html.TextAreaFor(m => m.Message, new { @class = "form-control", rows = "6" })
+                    </div>
+                </div>
+            </div>
+            <div class="form-group pull-right">
+                <div class="col-md-4 pull-right">
+                    <input type="submit" class="btn btn-primary" value="Enviar Consulta" />
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

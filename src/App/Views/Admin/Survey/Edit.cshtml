@@ -1,0 +1,101 @@
+﻿@{
+    ViewBag.Title = "Plantillas de Evaluación";
+}
+
+
+<div class="container">
+    <div class="row">
+        <div class="titles col-lg-6 col-md-6">
+            <h2>@ViewBag.Title</h2>
+            <h4 class="title-type">Editar Categor&iacute;a - @ViewBag.Survey.Category.getFullName()</h4>
+        </div>
+    </div>
+    <hr />
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead>
+                <tr class="alert-maker">
+                    <th>Pregunta Oferta</th>
+                    <th>Respuestas Oferta (Valor)</th>
+                    <th>Pregunta Demanda</th>
+                    <th>Respuestas Demanda (Valor)</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var question in ViewBag.Survey.Questions)
+                {
+                    if (!question.Old)
+                    {
+                    <tr>
+                        <td>@question.SupplyQuestion</td>
+                        <td>
+                            @foreach (var answer in question.Answers)
+                            {
+                                @("- " + answer.showSupplyAnswer())
+                                <br />
+                            }
+                        </td>
+                        <td>@question.DemandQuestion</td>
+                        <td>
+                            @foreach (var answer in question.Answers)
+                            {
+                                @("- " + answer.showDemandAnswer())
+                                <br />
+                            }
+                        </td>
+                        <td>
+                            <div class="pull-right">
+                                <a href="/Admin/Evaluation/EditQuestion/@question.Id" class="btn btn-warning" role="button">Editar</a>
+                                <a href="/Admin/Evaluation/DeleteQuestion/@ViewBag.Survey.Id/@question.Id" class="btn btn-danger" role="button" onclick="return confirm('Estás seguro que quieres eliminar la categoría?')">Eliminar</a>
+                            </div>
+                        </td>
+
+                    </tr>
+                    }
+                }
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td><a href="/Admin/Evaluation/createQuestion/@ViewBag.Survey.Id" class="btn btn-primary pull-right" role="button">Crear Pregunta</a></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Subcategor&iacute;as</th>
+                    <th>Fecha de Creaci&oacute;n</th>
+                    <th></th>
+                    <th class="text-right">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var subSurvey in ViewBag.SubSurveys)
+                {
+                    <tr>
+                        <td>@subSurvey.Category.Name</td>
+                        <td>@subSurvey.Category.CreatedAt</td>
+                        <td></td>
+                        <td>
+                            <div class="pull-right">
+                            <a href="/Admin/Evaluation/View/@subSurvey.Category.Id" class="btn btn-info" role="button">Ver</a>
+                            <a href="/Admin/Evaluation/Edit/@subSurvey.Category.Id" class="btn btn-warning" role="button">Editar</a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <!--<td><a href="/Admin/Evaluation/Create" class="btn btn-primary pull-right" role="button">Crear Categoria</a></td>-->
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+

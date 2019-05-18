@@ -1,0 +1,223 @@
+﻿@model App.Models.Oferta.RegisterViewModel
+@{
+    ViewBag.Title = "Oferta";
+}
+
+
+<div class="container">
+    <div class="row">
+        <div class="titles col-lg-4 col-md-4">
+            <h2>@ViewBag.Title</h2>
+            <h5 class="title-type">Id: @ViewBag.SurveyCompletion.Identifier</h5>
+            <h5 class="title-type">Fecha: @ViewBag.SurveyCompletion.CreatedAt.ToString("dd/MM/yyyy")</h5>
+            <h5 class="title-type">Estado: @ViewBag.SurveyCompletion.Status</h5>
+        </div>
+    </div>
+    <br />
+    <form action="" method="post" class="form-horizontal" role="form" novalidate="novalidate" enctype="multipart/form-data">
+        <div>
+            <div>
+                <input type="submit" class="btn btn-primary" value="Aprobar" name="action:Approve"
+                       @if (ViewBag.SurveyCompletion.Status == "Aprobado") {  @: disabled
+                                           } else { @: onclick="return confirm('¿Está seguro/a que desea aprobar la evaluación?');"
+                                           } />
+                <input type="submit" class="btn btn-danger" value="Rechazar" name="action:Reject"
+                       @if (ViewBag.SurveyCompletion.Status == "Rechazado") { @: disabled
+                                           } else { @: onclick="return confirm('¿Está seguro/a que desea rechazar la evaluación?');"
+                                           } />
+                <input type="submit" class="btn btn-default" value="Actualizar" name="action:Update" onclick="return confirm('¿Está seguro/a que desea guardar los cambios?');" />
+            </div>
+        </div>
+        <br />
+        <br />
+        @Html.ValidationSummary()
+        <div class="row" style="background-color:#faf6ff">
+            <ul class="nav nav-tabs">
+                <li class="active"><a data-toggle="tab" href="#home">Compan&iacute;a</a></li>
+                <li><a data-toggle="tab" href="#productos">Producto/Servicio</a></li>
+                <li><a data-toggle="tab" href="#ccom">Contacto Comercial</a></li>
+                <li><a data-toggle="tab" href="#cprod">Contacto del Producto/Servicio</a></li>
+                <li><a data-toggle="tab" href="#encuesta">Evaluaci&oacute;n</a></li>
+            </ul>
+            <div class="tab-content">
+                <div id="home" class="tab-pane fade in active">
+                    <div class="row col-lg-12">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <tr>
+                                    <th>Nombre</th>
+                                    <td>@Html.TextBoxFor(m => m.CompanyName, new { @class = "form-control" })</td>
+                                </tr>
+                                <tr>
+                                    <th>Descripci&oacute;n</th>
+                                    <td>@Html.TextBoxFor(m => m.CompanyDescription, new { @class = "form-control" })</td>
+                                </tr>
+                                <tr>
+                                    <th>Web Site</th>
+                                    <td>@Html.TextBoxFor(m => m.CompanyWebSite, new { @class = "form-control" })</td>
+                                </tr>
+                                <tr>
+                                    <th>Logo</th>
+                                    <td>
+                                        @if (Model.CompanyLogoFileName != null)
+                                        {
+                                            <img src="~/Content/images/logos/@Model.CompanyLogoFileName" width="75" style="margin-bottom: 10px;" />
+                                        }
+                                        <input type="file" id="CompanyLogo" name="CompanyLogo" accept=".png,.jpg" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Pa&iacute;s</th>
+                                    <td>@Html.DropDownListFor(m => m.CompanyCountry, Model.Countries, "Seleccione...", new { @class = "form-control" })</td>
+                                </tr>
+                                <tr>
+                                    <th>Ciudad</th>
+                                    <td>@Html.TextBoxFor(m => m.CompanyCity, new { @class = "form-control" })</td>
+                                </tr>
+                                <tr>
+                                    <th>Direcci&oacute;n</th>
+                                    <td>@Html.TextBoxFor(m => m.CompanyAddress, new { @class = "form-control" })</td>
+                                </tr>
+                                <tr>
+                                    <th>C&oacute;digo Postal</th>
+                                    <td>@Html.TextBoxFor(m => m.CompanyPostalCode, new { @class = "form-control" })</td>
+                                </tr>
+                                <tr>
+                                    <th>Sucursales en..</th>
+                                    <td>@Html.TextBoxFor(m => m.CompanyBranchOfficesIn, new { @class = "form-control" })</td>
+                                </tr>
+                                <tr>
+                                    <th>Mes de inicio del Año fiscal</th>
+                                    <td>@Html.DropDownListFor(m => m.CompanyFiscalStartDate, Model.Months, "Seleccione...", new { @class = "form-control" })</td>
+                                </tr>
+                                <tr>
+                                    <th>Mes de cierre del año fiscal</th>
+                                    <td>@Html.DropDownListFor(m => m.CompanyFiscalEndDate, Model.Months, "Seleccione...", new { @class = "form-control" })</td>
+                                </tr>
+                                <tr>
+                                    <th>Personal total de la empresa</th>
+                                    <td>@Html.TextBoxFor(m => m.CompanyPeopleInCompany, new { @class = "form-control" })</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div id="productos" class="tab-pane fade">
+                    <div class="row col-lg-12">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <tr>
+                                    <th>Nombre</th>
+                                    <td>@Html.TextBoxFor(m => m.ProductName, new { @class = "form-control" })</td>
+                                </tr>
+                                <tr>
+                                    <th>Versi&oacute;n</th>
+                                    <td>@Html.TextBoxFor(m => m.ProductVersion, new { @class = "form-control" })</td>
+                                </tr>
+                                <tr>
+                                    <th>Descripci&oacute;n</th>
+                                    <td>@Html.TextBoxFor(m => m.ProductDescription, new { @class = "form-control" })</td>
+                                </tr>
+                                <tr>
+                                    <th>Web Site</th>
+                                    <td>@Html.TextBoxFor(m => m.ProductWebSite, new { @class = "form-control" })</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div id="ccom" class="tab-pane fade">
+                    <div class="row col-lg-12">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <tr>
+                                    <th>Nombre</th>
+                                    <td>@Html.TextBoxFor(m => m.ComercialContactFullName, new { @class = "form-control" })</td>
+                                </tr>
+                                <!--<tr>
+                                    <th>Cargo / Funci&oacute;n</th>
+                                    <td>@Html.TextBoxFor(m => m.ComercialContactPosition, new { @class = "form-control" })</td>
+                                </tr>
+                                <tr>
+                                    <th>Tel&eacute;fono</th>
+                                    <td>@Html.TextBoxFor(m => m.ComercialContactPhone, new { @class = "form-control" })</td>
+                                </tr>-->
+                                <tr>
+                                    <th>Email</th>
+                                    <td>@Html.TextBoxFor(m => m.ComercialContactEmail, new { @class = "form-control" })</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div id="cprod" class="tab-pane fade">
+                    <div class="row col-lg-12">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <tr>
+                                    <th>Nombre</th>
+                                    <td>@Html.TextBoxFor(m => m.ProductContactFullName, new { @class = "form-control" })</td>
+                                </tr>
+                                <tr>
+                                    <th>Cargo / Funci&oacute;n</th>
+                                    <td>@Html.TextBoxFor(m => m.ProductContactPosition, new { @class = "form-control" })</td>
+                                </tr>
+                                <tr>
+                                    <th>Tel&eacute;fono</th>
+                                    <td>@Html.TextBoxFor(m => m.ProductContactPhone, new { @class = "form-control" })</td>
+                                </tr>
+                                <tr>
+                                    <th>Email</th>
+                                    <td>@Html.TextBoxFor(m => m.ProductContactEmail, new { @class = "form-control" })</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div id="encuesta" class="tab-pane fade">
+                    <div class="row col-lg-12">
+                        <div class="table-responsive">
+                            @foreach (var survey in ViewBag.SurveyCompletion.SurveyCompletions)
+                            {
+                                <h3>@survey.CategoryObj.getFullName()</h3>
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Pregunta</th>
+                                            <th>Respuestas</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var question in survey.Questions)
+                                        {
+                                            if (!question.QuestionObj.Old)
+                                            {
+                                            <tr>
+                                                <td>@question.Question</td>
+                                                <td>
+                                                    @foreach (var answer in question.Answers)
+                                                    {
+                                                        @answer.Answer
+                                                        <br />
+                                                    }
+                                                </td>
+                                            </tr>
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </form>
+
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+

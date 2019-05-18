@@ -1,0 +1,180 @@
+﻿@{
+    ViewBag.Title = "Oferta";
+}
+
+<h2>@ViewBag.Title</h2>
+<hr />
+
+<div class="container">
+    <h4>Id: @ViewBag.SurveyCompletion.Identifier</h4>
+    <h4>Fecha: @ViewBag.SurveyCompletion.CreatedAt.ToString("dd/MM/yyyy")</h4>
+    <h4>Estado: @ViewBag.SurveyCompletion.Status</h4>
+    <br />
+    
+    <h4>Compan&iacute;a</h4>
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <tr>
+                <th>Nombre</th>
+                <td>@ViewBag.Company.CompanyName</td>
+            </tr>
+            <tr>
+                <th>Descripci&oacute;n</th>
+                <td>@ViewBag.Company.CompanyDescription</td>
+            </tr>
+            <tr>
+                <th>Web Site</th>
+                <td><a href="@ViewBag.Company.CompanyWebSite" target="_blank">@ViewBag.Company.CompanyWebSite</a></td>
+            </tr>
+            <tr>
+                <th>Logo</th>
+                <td>
+                    @if (ViewBag.Company.CompanyLogo != null)
+                    {
+                        <img src="~/Content/images/logos/@ViewBag.Company.CompanyLogo" width="75" style="margin-bottom: 10px;" />
+                    }
+                </td>
+            </tr>
+            <tr>
+                <th>Pa&iacute;s</th>
+                <td>@ViewBag.Company.CompanyCountry</td>
+            </tr>
+            <tr>
+                <th>Ciudad</th>
+                <td>@ViewBag.Company.CompanyCity</td>
+            </tr>
+            <tr>
+                <th>Direcci&oacute;n</th>
+                <td>@ViewBag.Company.CompanyAddress</td>
+            </tr>
+            <tr>
+                <th>C&oacute;digo Postal</th>
+                <td>@ViewBag.Company.CompanyPostalCode</td>
+            </tr>
+            <tr>
+                <th>Sucursales en..</th>
+                <td>@ViewBag.Company.CompanyBranchOfficesIn</td>
+            </tr>
+            <tr>
+                <th>Mes de inicio del Año fiscal</th>
+                <td>@ViewBag.Company.CompanyFiscalStartDate</td>
+            </tr>
+            <tr>
+                <th>Mes de cierre del año fiscal</th>
+                <td>@ViewBag.Company.CompanyFiscalEndDate</td>
+            </tr>
+            <tr>
+                <th>Personal total de la empresa</th>
+                <td>@ViewBag.Company.CompanyPeopleInCompany</td>
+            </tr>
+        </table>
+    </div>
+
+    <br />
+    <h4>Producto/Servicio</h4>
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <tr>
+                <th>Nombre</th>
+                <td>@ViewBag.Product.Name</td>
+            </tr>
+            <tr>
+                <th>Versi&oacute;n</th>
+                <td>@ViewBag.Product.Version</td>
+            </tr>
+            <tr>
+                <th>Descripci&oacute;n</th>
+                <td>@ViewBag.Product.Description</td>
+            </tr>
+            <tr>
+                <th>Web Site</th>
+                <td><a href="@ViewBag.Product.WebSite" target="_blank">@ViewBag.Product.WebSite</a></td>
+            </tr>
+        </table>
+    </div>
+
+    <br />
+    <h4>Contacto comercial</h4>
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <tr>
+                <th>Nombre</th>
+                <td>@ViewBag.Company.ComercialContact.FullName</td>
+            </tr>
+            <tr>
+                <th>Cargo / Funci&oacute;n</th>
+                <td>@ViewBag.Company.ComercialContact.Position</td>
+            </tr>
+            <tr>
+                <th>Tel&eacute;fono</th>
+                <td>@ViewBag.Company.ComercialContact.Phone</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>@ViewBag.Company.ComercialContact.Email</td>
+            </tr>
+        </table>
+    </div>
+
+    <br />
+    <h4>Contacto del producto/servicio</h4>
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <tr>
+                <th>Nombre</th>
+                <td>@ViewBag.Product.ProductContact.FullName</td>
+            </tr>
+            <tr>
+                <th>Cargo / Funci&oacute;n</th>
+                <td>@ViewBag.Product.ProductContact.Position</td>
+            </tr>
+            <tr>
+                <th>Tel&eacute;fono</th>
+                <td>@ViewBag.Product.ProductContact.Phone</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>@ViewBag.Product.ProductContact.Email</td>
+            </tr>
+        </table>
+    </div>
+        
+    <br />
+    <h4>Evaluaci&oacute;n</h4>
+    <div class="table-responsive">
+        @foreach (var survey in ViewBag.SurveyCompletion.SurveyCompletions)
+        {
+            <h3>@survey.CategoryObj.getFullName()</h3>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Pregunta</th>
+                        <th>Respuestas</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach (var question in survey.Questions)
+                {
+                    if(!question.QuestionObj.Old) {
+                    <tr>
+                        <td>@question.Question</td>
+                        <td>
+                            @foreach (var answer in question.Answers)
+                            {
+                                @answer.Answer
+                                <br />
+                            }
+                        </td>
+                    </tr>
+                    }
+                }
+                </tbody>
+            </table>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+

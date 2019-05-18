@@ -1,0 +1,51 @@
+﻿@{
+    ViewBag.Title = "Mis productos y servicios";
+}
+
+<div class="container sat-spacing">
+    <div class="row">
+        <div class="sat-titlesOpening col-xs-12">
+            <h2>@ViewBag.Title</h2>
+        </div>
+    </div>
+    <div class="row sat-Ds">
+    <div class="table-responsive col-md-12">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Categoría</th>
+                    <th>Nombre</th>
+                    <th>Version</th>
+                    <th>Descripcion</th>
+                    <th>Sitio web</th>
+                    <th>Estado</th>
+                    <th style="min-width: 151px;">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (ViewBag.surveyCompletionParents != null)
+                {
+                    foreach (var survey in ViewBag.surveyCompletionParents)
+                    {
+                        <tr>
+                            <td>@survey.Category.Name</td>
+                            <td>@survey.Product.Name</td>
+                            <td>@survey.Product.Version</td>
+                            <td>@survey.Product.Description</td>
+                            <td>@survey.Product.WebSite</td>
+                            <td>@survey.Status</td>
+                            <td>
+                                @if(true) //(ViewBag.outdatedSurveys[survey.Id])
+                                {
+                                <a href="/Oferta/UpdateProduct/@survey.Id" class="btn btn-info" role="button">Modificar</a>
+                                }
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+    </div>
+</div>
+

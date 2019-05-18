@@ -1,0 +1,1 @@
+ALTER TABLE [SurveyCompletionParents] ADD PartialSaveReminderCount int not null default 0;

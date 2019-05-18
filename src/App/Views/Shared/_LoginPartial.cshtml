@@ -1,0 +1,24 @@
+﻿@using Microsoft.AspNet.Identity
+@if (Request.IsAuthenticated)
+{
+    <form action="/Account/LogOff" method="post" id="logoutForm" class="navbar-right">
+        @Html.AntiForgeryToken()
+        <ul class="nav navbar-nav navbar-right">
+            <li>
+                @Html.ActionLink("Hola " + User.Identity.GetUserName() + "!", "Manage", "Account", routeValues: null, htmlAttributes: new { title = "Manage" })
+            </li>
+            <li><a href="javascript:document.getElementById('logoutForm').submit()">Cerrar Sesion</a></li>
+        </ul>
+    </form>
+}
+else
+{
+    <ul class="nav navbar-nav navbar-right">
+        <li>
+            <a href="/Oferta/Register" id="registerLink">Registrarse</a>
+        </li>
+        <li>
+            <a href="/Account/Login" id="loginLink">Iniciar Sesión</a>
+        </li>
+    </ul>
+}
