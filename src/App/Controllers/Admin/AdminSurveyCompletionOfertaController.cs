@@ -27,63 +27,64 @@ namespace App.Controllers.Admin
         {
             var surveyCompletionParent = this.modelContext
                 .SurveyCompletionParent
-                .Include("Company")
-                .Include("Product")
-                .Include("SurveyCompletions")
-                .Include("SurveyCompletions.CategoryObj")
-                .Where(x =>
-                    x.Role.Name.ToUpper() == "OFERTA" &&
-                    x.PartialSave == false &&
-                    x.DeletedAt == null)
+                .Include( "Company" )
+                .Include( "Product" )
+                .Include( "SurveyCompletions" )
+                .Include( "SurveyCompletions.CategoryObj" )
+                .Where( x =>
+                     x.Role.Name.ToUpper() == "OFERTA" &&
+                     x.PartialSave == false &&
+                     x.DeletedAt == null )
+                    .OrderByDescending( x => x.CreatedAt )
                 .ToList();
 
             ViewBag.SurveysCompletionParent = surveyCompletionParent;
             ViewBag.ExistingCategories = this.modelContext
                 .Categories
-                .Select(x => x.Id)
+                .Select( x => x.Id )
                 .ToList();
 
-            return View("~/Views/Admin/SurveyCompletionOferta/List.cshtml");
+            return View( "~/Views/Admin/SurveyCompletionOferta/List.cshtml" );
         }
 
-        public ActionResult View(int id)
+        public ActionResult View( int id )
         {
             var surveyCompletionParent = this.modelContext
                 .SurveyCompletionParent
-                .Include("SurveyCompletions")
-                .Include("Company")
-                .Include("Company.ComercialContact")
-                .Include("Product")
-                .Include("Product.ProductContact")
-                .Include("SurveyCompletions.Questions")
-                .Include("SurveyCompletions.Questions.Answers")
-                .Include("SurveyCompletions.Questions.QuestionObj")
-                .Include("SurveyCompletions.CategoryObj")
-                .FirstOrDefault(x => x.Id == id);
+                .Include( "SurveyCompletions" )
+                .Include( "Company" )
+                .Include( "Company.ComercialContact" )
+                .Include( "Product" )
+                .Include( "Product.ProductContact" )
+                .Include( "SurveyCompletions.Questions" )
+                .Include( "SurveyCompletions.Questions.Answers" )
+                .Include( "SurveyCompletions.Questions.QuestionObj" )
+                .Include( "SurveyCompletions.CategoryObj" )
+                .FirstOrDefault( x => x.Id == id );
 
             ViewBag.SurveyCompletion = surveyCompletionParent;
 
             ViewBag.Company = surveyCompletionParent.Company;
             ViewBag.Product = surveyCompletionParent.Product;
 
-            return View("~/Views/Admin/SurveyCompletionOferta/View.cshtml");
+            return View( "~/Views/Admin/SurveyCompletionOferta/View.cshtml" );
         }
 
         [HttpGet]
-        public ActionResult Update(int id)
+        public ActionResult Update( int id )
         {
             var surveyCompletion = this.modelContext
                 .SurveyCompletionParent
-                .Include("SurveyCompletions")
-                .Include("Company")
-                .Include("Company.ComercialContact")
-                .Include("Product")
-                .Include("Product.ProductContact")
-                .Include("SurveyCompletions.Questions")
-                .Include("SurveyCompletions.Questions.Answers")
-                .Include("SurveyCompletions.Questions.QuestionObj")
-                .Include("SurveyCompletions.CategoryObj")
-                .FirstOrDefault(x => x.Id == id);
+                .Include( "SurveyCompletions" )
+                .Include( "Company" )
+                .Include( "Company.ComercialContact" )
+                .Include( "Product" )
+                .Include( "Product.ProductContact" )
+                .Include( "SurveyCompletions.Questions" )
+                .Include( "SurveyCompletions.Questions.Answers" )
+                .Include( "SurveyCompletions.Questions.QuestionObj" )
+                .Include( "SurveyCompletions.CategoryObj" )
+                .FirstOrDefault( x => x.Id == id );
 
             ViewBag.SurveyCompletion = surveyCompletion;
 
@@ -115,20 +116,20 @@ namespace App.Controllers.Admin
                 ProductContactEmail = surveyCompletion.Product.ProductContact.Email
             };
 
-            return View("~/Views/Admin/SurveyCompletionOferta/Update.cshtml", model);
+            return View( "~/Views/Admin/SurveyCompletionOferta/Update.cshtml", model );
         }
 
         [HttpPost]
-        [MultipleButton(Name = "action", Argument = "Update")]
-        public ActionResult Update(int id, RegisterViewModel model)
+        [MultipleButton( Name = "action", Argument = "Update" )]
+        public ActionResult Update( int id, RegisterViewModel model )
         {
             var SurveyCompletionParent = this.modelContext
                 .SurveyCompletionParent
-                .Include("Company")
-                .Include("Company.ComercialContact")
-                .Include("Product")
-                .Include("Product.ProductContact")
-                .FirstOrDefault(x => x.Id == id);
+                .Include( "Company" )
+                .Include( "Company.ComercialContact" )
+                .Include( "Product" )
+                .Include( "Product.ProductContact" )
+                .FirstOrDefault( x => x.Id == id );
 
             var company = SurveyCompletionParent.Company;
             var product = SurveyCompletionParent.Product;
@@ -161,94 +162,94 @@ namespace App.Controllers.Admin
 
             this.modelContext.SaveChanges();
 
-            if (model.CompanyLogo != null)
+            if( model.CompanyLogo != null )
             {
                 company.CompanyLogo = company.Id + "_" + model.CompanyLogo.FileName;
             }
 
             this.modelContext.SaveChanges();
 
-            if (model.CompanyLogo != null)
+            if( model.CompanyLogo != null )
             {
-                var fileName = Path.GetFileName(company.CompanyLogo);
-                var path = Path.Combine(Server.MapPath("~/Content/images/logos"), fileName);
-                model.CompanyLogo.SaveAs(path);
+                var fileName = Path.GetFileName( company.CompanyLogo );
+                var path = Path.Combine( Server.MapPath( "~/Content/images/logos" ), fileName );
+                model.CompanyLogo.SaveAs( path );
             }
 
-            return RedirectToAction("Index", "../Admin/EvaluationCompletion/Oferta");
+            return RedirectToAction( "Index", "../Admin/EvaluationCompletion/Oferta" );
         }
 
         [HttpPost]
-        [MultipleButton(Name = "action", Argument = "Approve")]
-        public ActionResult Approve(int id, RegisterViewModel model)
+        [MultipleButton( Name = "action", Argument = "Approve" )]
+        public ActionResult Approve( int id, RegisterViewModel model )
         {
             var surveyCompletionParent = this.modelContext
                 .SurveyCompletionParent
-                .Include("Company")
-                .Include("Company.ComercialContact")
-                .Include("Product")
-                .Include("Product.ProductContact")
-                .FirstOrDefault(x => x.Id == id);
+                .Include( "Company" )
+                .Include( "Company.ComercialContact" )
+                .Include( "Product" )
+                .Include( "Product.ProductContact" )
+                .FirstOrDefault( x => x.Id == id );
 
             surveyCompletionParent.Status = "Aprobado";
 
             this.modelContext.SaveChanges();
 
-            var template = this.RenderRazorViewToString("~/Views/Demanda/Email/EvaluationTemplate.cshtml", surveyCompletionParent);
-            var fileName = this.pdfService.GetEvaluationFileName(surveyCompletionParent.Id);
+            var template = this.RenderRazorViewToString( "~/Views/Demanda/Email/EvaluationTemplate.cshtml", surveyCompletionParent );
+            var fileName = this.pdfService.GetEvaluationFileName( surveyCompletionParent.Id );
 
-            this.surveySupplyApproveEmailService.Send(fileName, surveyCompletionParent);
+            this.surveySupplyApproveEmailService.Send( fileName, surveyCompletionParent );
 
-            return RedirectToAction("Index", "../Admin/EvaluationCompletion/Oferta");
+            return RedirectToAction( "Index", "../Admin/EvaluationCompletion/Oferta" );
         }
 
         [HttpPost]
-        [MultipleButton(Name = "action", Argument = "Reject")]
-        public ActionResult Reject(int id, RegisterViewModel model)
+        [MultipleButton( Name = "action", Argument = "Reject" )]
+        public ActionResult Reject( int id, RegisterViewModel model )
         {
             var surveyCompletion = this.modelContext
                 .SurveyCompletionParent
-                .FirstOrDefault(x => x.Id == id);
+                .FirstOrDefault( x => x.Id == id );
 
             surveyCompletion.Status = "Rechazado";
 
             this.modelContext.SaveChanges();
 
-            return RedirectToAction("Index", "../Admin/EvaluationCompletion/Oferta");
+            return RedirectToAction( "Index", "../Admin/EvaluationCompletion/Oferta" );
         }
 
         [HttpGet]
-        public ActionResult Delete(int id)
+        public ActionResult Delete( int id )
         {
             var surveyCompletionParent = this.modelContext
                 .SurveyCompletionParent
-                .FirstOrDefault(x => x.Id == id);
+                .FirstOrDefault( x => x.Id == id );
 
             surveyCompletionParent.DeletedAt = DateTime.Now;
 
             this.modelContext.SaveChanges();
 
-            return RedirectToAction("Index", "../Admin/EvaluationCompletion/Oferta");
+            return RedirectToAction( "Index", "../Admin/EvaluationCompletion/Oferta" );
         }
 
-        private string RenderRazorViewToString(string viewName, object model)
+        private string RenderRazorViewToString( string viewName, object model )
         {
             ViewData.Model = model;
-            using (var sw = new StringWriter())
+            using( var sw = new StringWriter() )
             {
                 var viewResult = ViewEngines.Engines.FindPartialView(
                     ControllerContext,
-                    viewName);
+                    viewName );
 
                 var viewContext = new ViewContext(
                     ControllerContext,
                     viewResult.View,
                     ViewData,
                     TempData,
-                    sw);
+                    sw );
 
-                viewResult.View.Render(viewContext, sw);
-                viewResult.ViewEngine.ReleaseView(ControllerContext, viewResult.View);
+                viewResult.View.Render( viewContext, sw );
+                viewResult.ViewEngine.ReleaseView( ControllerContext, viewResult.View );
                 return sw.GetStringBuilder().ToString();
             }
         }

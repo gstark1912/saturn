@@ -131,6 +131,7 @@
     <Compile Include="Model\Customer\Contact.cs" />
     <Compile Include="Model\Customer\Company.cs" />
     <Compile Include="Model\Customer\Customer.cs" />
+    <Compile Include="Model\Customer\MailRecord.cs" />
     <Compile Include="Model\Customer\Product.cs" />
     <Compile Include="Model\EvaluationReport\EvaluationReportRankingDTO.cs" />
     <Compile Include="Model\EvaluationReport\EvaluationReportProductDTO.cs" />

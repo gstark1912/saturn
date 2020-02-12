@@ -22,6 +22,7 @@
     <IISExpressUseClassicPipelineMode />
     <ApplicationInsightsResourceId>/subscriptions/8dd5ad5c-10bd-4e2c-8d0d-663afe99c062/resourcegroups/evaluandoSoftwareWebApp/providers/microsoft.insights/components/EvaluandoSoftware</ApplicationInsightsResourceId>
     <UseGlobalApplicationHostFile />
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -224,6 +225,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Attribute\MultipleButtonAttribute.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\Admin\AdminOfferHitsController.cs" />
     <Compile Include="Controllers\Admin\AdminUsersController.cs" />
     <Compile Include="Controllers\Admin\AdminSurveyCompletionOfertaController.cs" />
     <Compile Include="Controllers\Admin\AdminSurveyCompletionDemandaController.cs" />
@@ -243,11 +245,13 @@
     <Compile Include="DTO\AnswerDTO.cs" />
     <Compile Include="DTO\ContactDTO.cs" />
     <Compile Include="DTO\EvaluationReportTemplateDTO.cs" />
+    <Compile Include="DTO\OfferHitsDTO.cs" />
     <Compile Include="DTO\QuestionDTO.cs" />
     <Compile Include="DTO\RankingItemDTO.cs" />
     <Compile Include="DTO\SurveyCompletionDTO.cs" />
     <Compile Include="DTO\SurveyDTO.cs" />
     <Compile Include="DTO\SurveyQuestionDTO.cs" />
+    <Compile Include="Utils\ExtensionMethods.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -317,6 +321,7 @@
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\Util.js" />
     <Compile Include="Startup.cs" />
+    <Content Include="Utils\StatsEmail.html" />
     <Content Include="Views\Oferta\DatosPersonales.cshtml" />
     <Content Include="Views\Demanda\Email\EvaluationEmptyReportTemplate.cshtml" />
     <Content Include="Scripts\particles.json" />
@@ -324,6 +329,8 @@
     <Content Include="Views\Demanda\Continue\CategoryUpdate.cshtml" />
     <Content Include="Views\Demanda\Continue\Email\Continue.cshtml" />
     <Content Include="Views\Account\UsuarioEmailNoConfirmado.cshtml" />
+    <Content Include="Views\AdminOfferHits\Index.cshtml" />
+    <Content Include="Views\AdminOfferHits\SendMails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-chosen.css" />

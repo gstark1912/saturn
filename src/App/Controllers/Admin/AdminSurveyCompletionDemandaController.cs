@@ -18,57 +18,58 @@ namespace App.Controllers.Admin
         {
             ViewBag.SurveysCompletion = this.modelContext
                 .SurveyCompletionParent
-                .Include("Customer")
-                .Include("Category")
-                .Where(x =>
-                    x.Customer.Role == "DEMANDA" &&
-                    !x.PartialSave)
+                .Include( "Customer" )
+                .Include( "Category" )
+                .Where( x =>
+                     x.Customer.Role == "DEMANDA" &&
+                     !x.PartialSave )
+                    .OrderByDescending( x => x.CreatedAt )
                 .ToList();
 
-            return View("~/Views/Admin/SurveyCompletionDemanda/List.cshtml");
+            return View( "~/Views/Admin/SurveyCompletionDemanda/List.cshtml" );
         }
 
-        public ActionResult View(int id)
+        public ActionResult View( int id )
         {
             var surveyCompletion = this.modelContext
                 .SurveyCompletionParent
-                .Include("Customer")
-                .Include("SurveyCompletions.CategoryObj")
-                .Include("SurveyCompletions.Questions.Answers")
-                .FirstOrDefault(x => x.Id == id);
+                .Include( "Customer" )
+                .Include( "SurveyCompletions.CategoryObj" )
+                .Include( "SurveyCompletions.Questions.Answers" )
+                .FirstOrDefault( x => x.Id == id );
 
             ViewBag.SurveyCompletion = surveyCompletion;
 
             ViewBag.Ranking = this.modelContext
                 .Rankings
-                .Include("SurveyCompletionParentByOferta.Company")
-                .Include("SurveyCompletionParentByOferta.Product")
-                .Where(x => x.SurveyCompletionParentByDemanda.Id == id)
-                .OrderByDescending(x => x.Rank)
+                .Include( "SurveyCompletionParentByOferta.Company" )
+                .Include( "SurveyCompletionParentByOferta.Product" )
+                .Where( x => x.SurveyCompletionParentByDemanda.Id == id )
+                .OrderByDescending( x => x.Rank )
                 .ToList();
 
             ViewBag.Customer = surveyCompletion.Customer;
 
-            return View("~/Views/Admin/SurveyCompletionDemanda/View.cshtml");
+            return View( "~/Views/Admin/SurveyCompletionDemanda/View.cshtml" );
         }
 
         [HttpGet]
-        public ActionResult Update(int id)
+        public ActionResult Update( int id )
         {
             var surveyCompletion = this.modelContext
                 .SurveyCompletionParent
-                .Include("Customer")
-                .Include("Questions")
-                .Include("Questions.Answers")
-                .FirstOrDefault(x => x.Id == id);
+                .Include( "Customer" )
+                .Include( "Questions" )
+                .Include( "Questions.Answers" )
+                .FirstOrDefault( x => x.Id == id );
 
             ViewBag.SurveyCompletion = surveyCompletion;
 
             ViewBag.Ranking = this.modelContext
                 .Rankings
-                .Include("SurveyCompletionSupply.Company")
-                .Where(x => x.SurveyCompletionParentByDemanda.Id == id)
-                .OrderByDescending(x => x.Rank);
+                .Include( "SurveyCompletionSupply.Company" )
+                .Where( x => x.SurveyCompletionParentByDemanda.Id == id )
+                .OrderByDescending( x => x.Rank );
 
             var model = new RegisterViewModel
             {
@@ -87,16 +88,16 @@ namespace App.Controllers.Admin
                 Phone = surveyCompletion.Customer.PhoneNumber
             };
 
-            return View("~/Views/Admin/SurveyCompletionDemanda/Update.cshtml", model);
+            return View( "~/Views/Admin/SurveyCompletionDemanda/Update.cshtml", model );
         }
 
         [HttpPost]
-        public ActionResult Update(int id, RegisterViewModel registerViewModel)
+        public ActionResult Update( int id, RegisterViewModel registerViewModel )
         {
             var customer = this.modelContext
                 .SurveyCompletionParent
-                .Include("Customer")
-                .FirstOrDefault(x => x.Id == id)
+                .Include( "Customer" )
+                .FirstOrDefault( x => x.Id == id )
                 .Customer;
 
             customer.Email = registerViewModel.Email;
@@ -115,7 +116,7 @@ namespace App.Controllers.Admin
 
             this.modelContext.SaveChanges();
 
-            return RedirectToAction("Index", "../Admin/EvaluationCompletion/Demanda");
+            return RedirectToAction( "Index", "../Admin/EvaluationCompletion/Demanda" );
         }
     }
 }

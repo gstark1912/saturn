@@ -1,0 +1,85 @@
+﻿@{
+    ViewBag.Title = "Estadísticas en Demandas";
+    var haveResults = ViewBag.TopHits.Count > 0;
+    var disabledText = haveResults ? "readonly" : "";
+    var formAction = haveResults ? "SendMails" : "Index";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<div class="container">
+    @using( Html.BeginForm( formAction, "AdminOfferHits" ) )
+    {
+        <div class="form-group">
+            <label for="FromDate">Desde:</label>
+            <input type="date" class="form-control" id="FromDate" name="FromDate" value="@ViewBag.FromDate" @disabledText>
+        </div>
+        <div class="form-group">
+            <label for="ToDate">Hasta:</label>
+            <input type="date" class="form-control" id="ToDate" name="ToDate" value="@ViewBag.ToDate" @disabledText>
+        </div>
+        if( !haveResults )
+        {
+            <button type="submit" class="btn btn-default">Buscar</button>
+        }
+        else
+        {
+            <a href="@Url.Action( "Index" )"><button type="button" class="btn btn-default">Limpiar resultados</button></a>
+            <button type="submit" class="btn btn-default">Enviar Mails</button>
+        }
+    }
+</div>
+
+<div class="container">
+    @if( ViewBag.MailRecords == null )
+    {
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Empresa</th>
+                        <th>Cantidad</th>
+                        <th style="min-width: 151px;">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach( var products in ViewBag.TopHits )
+                    {
+                        <tr>
+                            <td>@products.Offer.ProductName</td>
+                            <td>@products.Offer.CompanyName</td>
+                            <td>@products.Count</td>
+                            <td>
+                                @*<a href="/Admin/EvaluationCompletion/Demanda/View/@surveyCompletion.Id" class="btn btn-info" role="button">Ver</a>*@
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <h4>Historial de envío de mails.</h4>
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Período</th>
+                        <th>Fecha de Envío</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach( var c in ViewBag.MailRecords )
+                    {
+                        <tr>
+                            <td>@String.Format( "{0}~{1}", c.FromDate.ToShortDateString(), c.ToDate.ToShortDateString() )</td>
+                            <td>@String.Format( "{0}", c.TimeStamp.ToString() )</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>

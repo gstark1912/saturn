@@ -9,10 +9,10 @@ namespace Model.Context
 {
     public class ModelContext : IdentityDbContext<ApplicationUser>
     {
-        public ModelContext() : base("ModelContext")
+        public ModelContext() : base( "ModelContext" )
         {
             // disble database initianlize
-            Database.SetInitializer<ModelContext>(null);
+            Database.SetInitializer<ModelContext>( null );
 
             // initialize database data
             //          Database.ExecuteSqlCommand(@"
@@ -33,24 +33,24 @@ namespace Model.Context
             this.Configuration.LazyLoadingEnabled = false;
         }
 
-        protected override void OnModelCreating(System.Data.Entity.DbModelBuilder modelBuilder)
+        protected override void OnModelCreating( System.Data.Entity.DbModelBuilder modelBuilder )
         {
-            base.OnModelCreating(modelBuilder);
+            base.OnModelCreating( modelBuilder );
 
-            modelBuilder.Entity<IdentityUser>().ToTable("Users").Property(p => p.Id).HasColumnName("Id");
-            modelBuilder.Entity<ApplicationUser>().ToTable("Users").Property(p => p.Id).HasColumnName("Id");
-            modelBuilder.Entity<IdentityUserRole>().ToTable("UsersRoles");
-            modelBuilder.Entity<IdentityUserLogin>().ToTable("UsersLogins");
-            modelBuilder.Entity<IdentityUserClaim>().ToTable("UsersClaims");
-            modelBuilder.Entity<IdentityRole>().ToTable("Roles");
-            modelBuilder.Entity<ApplicationRole>().ToTable("Roles");
+            modelBuilder.Entity<IdentityUser>().ToTable( "Users" ).Property( p => p.Id ).HasColumnName( "Id" );
+            modelBuilder.Entity<ApplicationUser>().ToTable( "Users" ).Property( p => p.Id ).HasColumnName( "Id" );
+            modelBuilder.Entity<IdentityUserRole>().ToTable( "UsersRoles" );
+            modelBuilder.Entity<IdentityUserLogin>().ToTable( "UsersLogins" );
+            modelBuilder.Entity<IdentityUserClaim>().ToTable( "UsersClaims" );
+            modelBuilder.Entity<IdentityRole>().ToTable( "Roles" );
+            modelBuilder.Entity<ApplicationRole>().ToTable( "Roles" );
 
-            modelBuilder.Entity<Question>().HasRequired(x => x.Survey)
-                .WithMany(x => x.Questions);
+            modelBuilder.Entity<Question>().HasRequired( x => x.Survey )
+                .WithMany( x => x.Questions );
 
-            modelBuilder.Entity<Product>().HasRequired(p => p.ProductContact)
-                .WithMany(b => b.Product)
-                .HasForeignKey(p => p.ProductContactId).WillCascadeOnDelete(false);
+            modelBuilder.Entity<Product>().HasRequired( p => p.ProductContact )
+                .WithMany( b => b.Product )
+                .HasForeignKey( p => p.ProductContactId ).WillCascadeOnDelete( false );
         }
 
         public DbSet<Category> Categories { get; set; }
@@ -67,5 +67,6 @@ namespace Model.Context
         public DbSet<Company> Companies { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Contact> Contacts { get; set; }
+        public DbSet<MailRecord> MailRecords { get; set; }
     }
 }

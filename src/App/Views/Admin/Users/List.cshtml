@@ -18,9 +18,9 @@
                 </tr>
             </thead>
             <tbody>
-                @if (ViewBag.UsuariosNoHabilitados != null)
+                @if( ViewBag.UsuariosNoHabilitados != null )
                 {
-                    foreach (var user in ViewBag.UsuariosNoHabilitados)
+                    foreach( var user in ViewBag.UsuariosNoHabilitados )
                     {
                         <tr>
                             <td>@user.Company.CompanyName</td>
@@ -29,6 +29,9 @@
                             <td>@user.Email</td>
                             <td>
                                 <a href="/Admin/Evaluation/Usuarios/Habilitar/@user.Id" class="btn btn-info" role="button">Habilitar</a>
+                            </td>
+                            <td>
+                                <a href="/Admin/Evaluation/Usuarios/Eliminar/@user.Id" class="btn btn-info" role="button">Eliminar</a>
                             </td>
                         </tr>
                     }
