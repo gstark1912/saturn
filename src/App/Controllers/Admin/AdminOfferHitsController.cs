@@ -22,8 +22,9 @@ namespace App.Controllers.Admin
             this.modelContext = new ModelContext();
         }
         // GET: AdminOfferHits
-        public ActionResult Index( string FromDate = null, string ToDate = null )
+        public ActionResult Index( string FromDate = null, string ToDate = null, string message = "" )
         {
+            ViewBag.Message = message;
             if( FromDate != null && ToDate != null )
             {
                 ViewBag.FromDate = FromDate;
@@ -91,17 +92,17 @@ namespace App.Controllers.Admin
                 ViewBag.FromDate = FromDate;
                 ViewBag.ToDate = ToDate;
                 var period = GetPeriod( ViewBag.FromDate.ToString(), ViewBag.ToDate.ToString() );
-                var stats = LoadStats( ViewBag.FromDate.ToString(), ViewBag.ToDate.ToString() );
+                List<OfferHitsDTO> stats = LoadStats( ViewBag.FromDate.ToString(), ViewBag.ToDate.ToString() );
                 var companies = GetCompaniesStats( stats );
                 SendMailsToCompanies( stats, period );
                 SaveMailRecord( FromDate, ToDate );
+
+                return RedirectToAction( "Index", new { message = String.Format( "Se han enviado {0} mails", stats.Count ) } );
             }
             else
             {
                 return RedirectToAction( "Index" );
             }
-
-            return View( "~/Views/AdminOfferHits/ConfirmEmails.cshtml" );
         }
 
         private void SaveMailRecord( string fromDate, string toDate )
