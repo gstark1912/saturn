@@ -150,8 +150,10 @@ namespace App.Controllers.Admin
                     .Replace( "{Count}", c.Count.ToString() )
                     .Replace( "{Times}", c.Count == 1 ? "vez" : "veces" )
                     .Replace( "{ProductName}", c.Offer.ProductName )
-                    .Replace( "{Period}", period )
-                    .Replace( "{HTMLTable}", htmlTopTenTable );
+                    .Replace( "{Period}", period );
+
+                //Tabla Top 10 oculta del mail por el momento
+                //Replace( "{HTMLTable}", htmlTopTenTable )
 
                 string emailTo;
                 if( debugMode )
