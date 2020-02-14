@@ -281,6 +281,7 @@
     <Compile Include="Utils\UniqueKeyUtil.cs" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\images\logo_big_right.png" />
+    <Content Include="Content\images\positivessl_trust_seal_sm_124x32.png" />
     <Content Include="Content\images\saturn.svg" />
     <Content Include="Content\jstree\32px.png" />
     <Content Include="Content\jstree\40px.png" />
@@ -343,7 +344,6 @@
     <Content Include="Content\images\logo_medium.png" />
     <Content Include="Content\images\logo_small.png" />
     <Content Include="Content\images\product_certified.png" />
-    <Content Include="Content\PDF\dummy.txt" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\app\layout.js" />
@@ -447,6 +447,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Content\PDF\" />
     <Folder Include="Views\Continue\" />
   </ItemGroup>
   <ItemGroup>

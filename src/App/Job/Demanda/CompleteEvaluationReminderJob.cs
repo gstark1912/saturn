@@ -32,46 +32,46 @@ namespace App.Job.Demanda
         {
             var surveysCompletionParent = this.modelContext
                 .SurveyCompletionParent
-                .Include("Role")
-                .Include("Category")
-                .Where(x =>
-                    x.Role.Name == "DEMANDA" &&
-                    x.PartialSave == true &&
-                    x.DeletedAt == null &&
-                    x.PartialSaveReminderCount <= 3)
-                .Take(20)
+                .Include( "Role" )
+                .Include( "Category" )
+                .Where( x =>
+                     x.Role.Name == "DEMANDA" &&
+                     x.PartialSave == true &&
+                     x.DeletedAt == null &&
+                     x.PartialSaveReminderCount <= 3 )
+                .Take( 20 )
                 .ToList();
 
-            foreach (var surveyCompletionParent in surveysCompletionParent)
+            foreach( var surveyCompletionParent in surveysCompletionParent )
             {
                 var daysDiff = 0;
                 var sendMail = false;
 
-                daysDiff = (DateTime.Now - surveyCompletionParent.CreatedAt).Days;
+                daysDiff = ( DateTime.Now - surveyCompletionParent.CreatedAt ).Days;
 
-                if (surveyCompletionParent.PartialSaveReminderCount == 0 && daysDiff >= 1)
+                if( surveyCompletionParent.PartialSaveReminderCount == 0 && daysDiff >= 1 )
                 {
                     sendMail = true;
                 }
 
-                if (surveyCompletionParent.PartialSaveReminderCount == 1 && daysDiff >= 2)
+                if( surveyCompletionParent.PartialSaveReminderCount == 1 && daysDiff >= 2 )
                 {
                     sendMail = true;
                 }
 
-                if (surveyCompletionParent.PartialSaveReminderCount == 2 && daysDiff >= 4)
+                if( surveyCompletionParent.PartialSaveReminderCount == 2 && daysDiff >= 4 )
                 {
                     sendMail = true;
                 }
 
-                if (surveyCompletionParent.PartialSaveReminderCount == 3 && daysDiff >= 5)
+                if( surveyCompletionParent.PartialSaveReminderCount == 3 && daysDiff >= 5 )
                 {
                     sendMail = true;
                 }
 
-                if (sendMail)
+                if( sendMail )
                 {
-                    this.SendEmail(surveyCompletionParent);
+                    this.SendEmail( surveyCompletionParent );
 
                     surveyCompletionParent.PartialSaveReminderCount++;
                     this.modelContext.SaveChanges();
@@ -79,24 +79,24 @@ namespace App.Job.Demanda
             }
         }
 
-        private void SendEmail(SurveyCompletionParent surveyCompletionParent)
+        private void SendEmail( SurveyCompletionParent surveyCompletionParent )
         {
-            var mailMessage = this.GetMailMessage(surveyCompletionParent);
+            var mailMessage = this.GetMailMessage( surveyCompletionParent );
 
-            this.emailSender.Send(mailMessage);
+            this.emailSender.Send( mailMessage );
         }
 
-        private MailMessage GetMailMessage(SurveyCompletionParent surveyCompletionParent)
+        private MailMessage GetMailMessage( SurveyCompletionParent surveyCompletionParent )
         {
-            var link = this.sendEmailToContinueService.GetLink(surveyCompletionParent);
+            var link = this.sendEmailToContinueService.GetLink( surveyCompletionParent );
             var email = ConfigurationManager.AppSettings["SMTPUsername"];
 
             var reminderCount = surveyCompletionParent.PartialSaveReminderCount + 1;
             var subject = $"Evaluando Software - Proyecto no finalizado (Reminder {reminderCount}/4)";
 
-            var body = $"Su proyecto para obtener una recomencación está pendiente de finalización. Ingresando al siguiente link {link}, podrás terminarlo y recibir la recomendación de producto/ servicio que mejor se adapte a tus necesidades. <br /> <br /> Este servicio forma parte del Programa de Mejoramiento de la Industria, una herramienta de Evaluando Software para mejorar las condiciones de oferta y demanda. Para ti es gratuito";
+            string body = string.Format( "Su proyecto para obtener una recomencación está pendiente de finalización. Ingresando al siguiente link {0}, podrás terminarlo y recibir la recomendación de producto/ servicio que mejor se adapte a tus necesidades. <br /> <br /> Este servicio forma parte del Programa de Mejoramiento de la Industria, una herramienta de Evaluando Software para mejorar las condiciones de oferta y demanda. Para ti es gratuito", (object)link );
 
-            MailMessage mailMessage = new MailMessage(email, email, subject, body)
+            MailMessage mailMessage = new MailMessage( email, email, subject, body )
             {
                 IsBodyHtml = true
             };

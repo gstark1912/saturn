@@ -7,19 +7,17 @@
     @Html.AntiForgeryToken()
     <div class="container sat-survey">
 
-        @Html.HiddenFor(x => x.CategoryId)
-        @Html.HiddenFor(x => x.SurveyId)
-        @Html.ValidationMessage("Question")
+        @Html.HiddenFor( x => x.CategoryId ) @Html.HiddenFor( x => x.SurveyId ) @Html.ValidationMessage( "Question" )
         <div class="row sat-mailSurvey">
             <div class="col-md-offset-3 col-md-6">
                 <div class="form-group alert alert-maker">
                     <label>Por favor ingrese su email para que podamos enviarle los resultados</label>
-                    <input type="email" class="form-control" name="email" id="email" required value="@Model.Email" />
-                    @Html.ValidationMessage("email")
+                    <input type="email" class="form-control" name="email" id="email" required value="@Model.Email" /> @Html.ValidationMessage( "email" )
                     <a class="sat-btn" href="#comienzo">Comenzar</a>
                 </div>
             </div>
         </div>
+        <a name="comienzo"></a>
         <div class="row">
             <div class="sat-titlesOpening col-xs-12">
                 <h2>@ViewBag.Title</h2>
@@ -34,45 +32,46 @@
         </div>
         <div class="row">
             <div class="col-md-offset-3 col-md-6">
-                <a name="comienzo"></a>
                 <h4 class="title-type" style="margin-top: 10px;">
                     Inicio de Evaluaci&oacute;n
                 </h4>
             </div>
         </div>
         <div class="row">
-            <div class="col-md-offset-3 col-md-6">
-
-                @{int i = 0;
-                    int j = 0; }
-                @foreach (var survey in Model.SurveyDTOs)
-            {
+            <div class="col-md-offset-3 col-md-6 sat-survey">
+                @{int i = 0; int j = 0; } @foreach( var survey in Model.SurveyDTOs )
+                {
                     <h4 class="sat-titleSurvey">
                         @survey.CategoryName
                     </h4>
                     <input type="hidden" name="SurveyDTOs[@j].SurveyId" value="@survey.SurveyId">
-                    <input type="hidden" name="SurveyDTOs[@j].CategoryId" value="@survey.CategoryId">
-                    foreach (var question in survey.SurveyQuestionDTOs)
+                    <input type="hidden" name="SurveyDTOs[@j].CategoryId" value="@survey.CategoryId"> foreach( var question in survey.SurveyQuestionDTOs )
                     {
-                        if (!question.Old)
+                        if( !question.Old )
                         {
                             <input type="hidden" name="surveyCompletionDTOs[@i].QuestionId" value="@question.QuestionId">
                             <input type="hidden" name="surveyCompletionDTOs[@i].Question" value="@question.Question">
-                            <input type="hidden" name="surveyCompletionDTOs[@i].SurveyId" value="@survey.SurveyId">
-                            Html.RenderAction("Question", "Survey", new { id = question.QuestionId, identifier = i, surveyCompletionId = Model.SurveyCompletionId });
-                            i++;
+                            <input type="hidden" name="surveyCompletionDTOs[@i].SurveyId" value="@survey.SurveyId">Html.RenderAction( "Question", "Survey", new { id = question.QuestionId, identifier = i, surveyCompletionId = Model.SurveyCompletionId } ); i++;
                         }
                     }
                     j++;
                 }
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" class="btn btn-primary pull-right" name="action:Save" value="Finalizar Evaluación" />
-                        <input type="submit" class="btn btn-primary pull-right" name="action:SaveParcial" value="Guardar y continuar luego" />
+        <div class="btn-survey-shadow">
+            <div id="btn-survey" class="row-display-none row">
+                <div class="col-md-12 text-center">
+                    <h4>Progreso</h4>
+                    <div class="progress-container">
+                        <div class="progress-bar" id="myBar"></div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-8 text-center">
+                            <input id="btn-guardar" type="submit" class="btn btn-secondary sat-btn-guardar" name="action:SaveParcial" value="Guardar y continuar luego" />
+                            <input id="btn-finalizar" type="submit" class="btn btn-primary sat-btn-finalizar" name="action:Save" value="Finalizar" />
+                        </div>
                     </div>
                 </div>
             </div>
@@ -80,6 +79,53 @@
     </div>
 </form>
 
+<script>
+
+// Barra de progreso
+jQuery(function($) {
+
+    var $nav = $('#btn-survey');
+    var $win = $(window);
+    var winH = $win.height(); // Get the window height.
+
+	var d = document.documentElement;
+	var offset = d.scrollTop + window.innerHeight;
+	var height = d.offsetHeight;
+
+    $win.on("scroll", function () {
+        if ($(this).scrollTop() >= 0.4 * winH ) {
+            $nav.removeClass( "row-display-none" ).addClass("row-fixed-bottom");
+        } else {
+            $nav.removeClass("row-fixed-bottom");
+        }
+
+		if ($(window).scrollTop() + $(window).height() === $(document).height()) {
+			$nav.removeClass("row-fixed-bottom").addClass("row-display");
+		}
+		else{
+			$nav.removeClass("row-display").addClass("row-fixed-bottom");
+		}
+
+    }).on("resize", function(){ // If the user resizes the window
+       winH = $(this).height(); // you'll need the new height value
+
+    })
+});
+</script>
+
+<script>
+
+        window.onscroll = function() {myFunction()};
+
+        function myFunction() {
+			var winScroll =  ($(window).scrollTop()) - $(".row.sat-mailSurvey").height(); //document.body.scrollTop || document.documentElement.scrollTop;
+			var height = document.documentElement.scrollHeight - document.documentElement.clientHeight - $(".row.sat-mailSurvey").height();
+			var scrolled = (winScroll / height) * 100;
+			console.log(scrolled+"%");
+			document.getElementById("myBar").style.width = scrolled + "%";
+        }
+</script>
+
 @section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render( "~/bundles/jqueryval" )
 }

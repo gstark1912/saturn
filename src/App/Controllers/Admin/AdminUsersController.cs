@@ -70,9 +70,8 @@ namespace App.Controllers.Admin
             var email = ConfigurationManager.AppSettings["SMTPUsername"];
             var subject = "Usuario Habilitado!";
 
-            var url = Url.Action( "Home", "Index" );
-
-            var body = $"Hola {user.FirstName}, le informamos que su usuario ya fue habilitado para su uso, haga click <a href='{url}'>aquí</a> para iniciar sesion.";
+            string str = this.Url.Action( "Home", "Index" );
+            string body = string.Format( "Hola {0}, le informamos que su usuario ya fue habilitado para su uso, haga click <a href='{1}'>aquí</a> para iniciar sesion.", (object)user.FirstName, (object)str );
 
             MailMessage mailMessage = new MailMessage( email, email, subject, body )
             {

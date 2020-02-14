@@ -9,7 +9,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="table-responsive col-md-offset-3 col-md-6 sat-Ds">
+        <div class="table-responsive col-md-offset-3 col-md-6 sat-Ds sat-spacing-y-x1">
             <table class="table table-hover">
                 <thead>
                     <tr>
@@ -18,9 +18,9 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @if (ViewBag.surveys != null)
+                    @if( ViewBag.surveys != null )
                     {
-                        foreach (var survey in ViewBag.surveys)
+                        foreach( var survey in ViewBag.surveys )
                         {
                             <tr>
                                 <td>@survey.CategoryObj.Name</td>
@@ -37,8 +37,8 @@
                 <input type="hidden" name="ParentSurveyCompletionId" value="@ViewBag.ParentSurveyCompletionId">
                 <input type="hidden" name="PartialSaveKey" value="@ViewBag.PartialSaveKey">
 
-                <input type="submit" class="btn btn-primary pull-right" name="action:Save" value="Finalizar Evaluación" />
-                <input type="submit" class="btn btn-primary pull-right" name="action:SaveParcial" value="Guardar y continuar luego" />
+                <input type="submit" class="btn btn-primary sat-btn-finalizar pull-right" name="action:Save" value="Finalizar" />
+                <input type="submit" class="btn btn-secondary sat-btn-guardar pull-right" name="action:SaveParcial" value="Guardar" />
             </form>
         </div>
     </div>
