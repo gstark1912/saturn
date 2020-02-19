@@ -53,14 +53,25 @@ namespace App.Controllers.Admin
 
         public ActionResult Eliminar( string id )
         {
-            var user = modelContext
-                .Users
-                .FirstOrDefault( x => x.Id == id );
+            try
+            {
+                var user = modelContext
+                    .Users
+                    .FirstOrDefault( x => x.Id == id );
 
-            var roles = userManager.GetRoles( id );
+                var roles = userManager.GetRoles( id );
 
-            userManager.RemoveFromRoles( id, roles.ToArray() );
-            userManager.Delete( user );
+                userManager.RemoveFromRoles( id, roles.ToArray() );
+                userManager.Delete( user );
+            }
+            catch( System.Exception ex )
+            {
+            }
+
+            //quick fix for routing issue
+            var users = modelContext.Users.Include( "Company" ).Where( x => !x.Enabled ).ToList();
+
+            ViewBag.UsuariosNoHabilitados = users;
 
             return View( "~/Views/Admin/Users/List.cshtml" );
         }
