@@ -455,6 +455,10 @@
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ExcelEvaluando\ExcelEvaluando.csproj">
+      <Project>{cbd91fa0-b9ff-4731-9875-2fc490e7344a}</Project>
+      <Name>ExcelEvaluando</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Model\Model.csproj">
       <Project>{8f234d91-e66c-458d-b577-69e5cf9e7d22}</Project>
       <Name>Model</Name>

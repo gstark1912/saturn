@@ -1,5 +1,10 @@
 ﻿using App.Models.Survey;
+using ExcelEvaluando;
+using ExcelEvaluando.Models;
 using Model.Context;
+using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -27,6 +32,41 @@ namespace App.Controllers.Admin
                 .ToList();
 
             return View( "~/Views/Admin/SurveyCompletionDemanda/List.cshtml" );
+        }
+
+        public FileResult ExportToExcel()
+        {
+            byte[] result;
+
+            IEnumerable<SurveyCompletionParentOutput> data = this.modelContext
+                .SurveyCompletionParent
+                .Include( "Customer" )
+                .Include( "Category" )
+                .Where( x =>
+                     x.Customer.Role == "DEMANDA" &&
+                     !x.PartialSave )
+                    .OrderByDescending( x => x.CreatedAt )
+                .ToList()
+                .Select( x => new SurveyCompletionParentOutput
+                {
+                    Category = x.Category.Name,
+                    Id = x.Identifier,
+                    CustomerFullName = String.Format( "{0} {1}", x.Customer.FirstName, x.Customer.LastName ),
+                    CustomerEmail = x.Customer.Email,
+                    LectorType = x.Customer.LectorType,
+                    UTMSource = x.Source,
+                    CreatedAt = String.Format( "{0} {1}", x.CreatedAt.ToShortDateString(), x.CreatedAt.ToShortTimeString() )
+                } );
+
+            using( var templateStream = new MemoryStream() )
+            {
+                new EvaluandoExcelBLL().WriteDataInExcel( templateStream, data );
+                templateStream.Position = 0;
+                result = templateStream.ToArray();
+                templateStream.Flush();
+            }
+
+            return File( result, "application/octet-stream", DateTime.Now.ToShortDateString() + ".xlsx" );
         }
 
         public ActionResult View( int id )
