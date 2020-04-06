@@ -19,19 +19,19 @@ namespace App.Service.Demanda
         {
             this.modelContext = new ModelContext();
 
-            var roleStore = new RoleStore<ApplicationRole>(this.modelContext);
-            this.roleManager = new RoleManager<ApplicationRole>(roleStore);
+            var roleStore = new RoleStore<ApplicationRole>( this.modelContext );
+            this.roleManager = new RoleManager<ApplicationRole>( roleStore );
         }
 
         //User.Identity.GetUserId();
-        public SurveyCompletionParent Save(SurveyViewModel model, bool partial, string userId)
+        public SurveyCompletionParent Save( SurveyViewModel model, bool partial, string userId )
         {
             var category = this.modelContext
                 .Categories
-                .Where(x => x.Id == model.CategoryId)
+                .Where( x => x.Id == model.CategoryId )
                 .FirstOrDefault();
 
-            var role = this.roleManager.FindByName("DEMANDA");
+            var role = this.roleManager.FindByName( "DEMANDA" );
 
             var surveyCompletionParent = new SurveyCompletionParent
             {
@@ -41,14 +41,15 @@ namespace App.Service.Demanda
                 PartialSave = partial,
                 Category = category,
                 Email = model.Email,
-                PartialSaveKey = Guid.NewGuid().ToString()
+                PartialSaveKey = Guid.NewGuid().ToString(),
+                Source = model.Source
             };
 
-            foreach (var surveyDTO in model.SurveyDTOs)
+            foreach( var surveyDTO in model.SurveyDTOs )
             {
                 var categoryObj = this.modelContext
                     .Categories
-                    .Where(x => x.Id == surveyDTO.CategoryId)
+                    .Where( x => x.Id == surveyDTO.CategoryId )
                     .FirstOrDefault();
 
                 var surveyCompletion = new SurveyCompletion
@@ -65,31 +66,31 @@ namespace App.Service.Demanda
 
                 var surveyQuestions = this.modelContext
                         .Questions
-                        .Include("Answers")
-                        .Where(x => x.Survey.Id == surveyDTO.SurveyId)
+                        .Include( "Answers" )
+                        .Where( x => x.Survey.Id == surveyDTO.SurveyId )
                         .ToList();
 
-                foreach (var question in model.surveyCompletionDTOs)
+                foreach( var question in model.surveyCompletionDTOs )
                 {
                     var answers = new List<SurveyCompletionAnswer>();
-                    if (question.SurveyId == surveyDTO.SurveyId)
+                    if( question.SurveyId == surveyDTO.SurveyId )
                     {
-                        if (question.Answers != null)
+                        if( question.Answers != null )
                         {
                             answers = surveyQuestions
-                                .Where(x => x.Id == question.QuestionId)
+                                .Where( x => x.Id == question.QuestionId )
                                 .FirstOrDefault()
                                 .Answers
-                                .Where(x => question.Answers.Contains(x.Id))
-                                .Select(x => new SurveyCompletionAnswer
+                                .Where( x => question.Answers.Contains( x.Id ) )
+                                .Select( x => new SurveyCompletionAnswer
                                 {
                                     Answer = x.DemandAnswer,
                                     AnswerValue = x.Value
-                                })
+                                } )
                                 .ToList();
                         }
 
-                        ApplicationUser currentUser = this.modelContext.Users.FirstOrDefault(x => x.Id == userId);
+                        ApplicationUser currentUser = this.modelContext.Users.FirstOrDefault( x => x.Id == userId );
 
                         var surveyCompletionQuestion = new SurveyCompletionQuestion
                         {
@@ -98,14 +99,14 @@ namespace App.Service.Demanda
                             Answers = answers
                         };
 
-                        surveyCompletion.Questions.Add(surveyCompletionQuestion);
+                        surveyCompletion.Questions.Add( surveyCompletionQuestion );
                     }
                 }
 
-                this.modelContext.SurveysCompletion.Add(surveyCompletion);
+                this.modelContext.SurveysCompletion.Add( surveyCompletion );
             }
 
-            this.modelContext.SurveyCompletionParent.Add(surveyCompletionParent);
+            this.modelContext.SurveyCompletionParent.Add( surveyCompletionParent );
             this.modelContext.SaveChanges();
 
             return surveyCompletionParent;

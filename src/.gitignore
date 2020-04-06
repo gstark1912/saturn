@@ -3,6 +3,10 @@
 /App/bin
 /Model/bin
 /Model/obj
+/UnitTestProject/bin
+/UnitTestProject/obj
 /Services/bin
 /Services/obj
 /packages
+*/PublishProfiles
+/.vs

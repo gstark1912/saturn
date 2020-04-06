@@ -16,6 +16,7 @@ using Services;
 using Services.Service.EmailService;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Web.Mvc;
@@ -38,11 +39,11 @@ namespace App.Controllers.Demanda
         {
             this.modelContext = new ModelContext();
 
-            var userStore = new UserStore<ApplicationUser>(this.modelContext);
-            var roleStore = new RoleStore<ApplicationRole>(this.modelContext);
+            var userStore = new UserStore<ApplicationUser>( this.modelContext );
+            var roleStore = new RoleStore<ApplicationRole>( this.modelContext );
 
-            this.userManager = new UserManager<ApplicationUser>(userStore);
-            this.roleManager = new RoleManager<ApplicationRole>(roleStore);
+            this.userManager = new UserManager<ApplicationUser>( userStore );
+            this.roleManager = new RoleManager<ApplicationRole>( roleStore );
 
             this.surveyCompletionByDemandEmailService = new SurveyCompletionByDemandEmailService();
             this.pdfService = new PdfService();
@@ -52,47 +53,47 @@ namespace App.Controllers.Demanda
             this.sendEmailToContinueService = new SendEmailToContinueService();
         }
 
-        public ActionResult Index(int Category, string subCategories)
+        public ActionResult Index( int Category, string subCategories )
         {
             List<SurveyDTO> surveys = new List<SurveyDTO>();
 
             List<int> subcategories_Ids = new List<int>();
 
-            foreach (string s in subCategories.Split(','))
-                if (s != "")
-                    subcategories_Ids.Add(int.Parse(s));
+            foreach( string s in subCategories.Split( ',' ) )
+                if( s != "" )
+                    subcategories_Ids.Add( int.Parse( s ) );
 
-            renderSubCategory(Category, surveys, subcategories_Ids);
+            renderSubCategory( Category, surveys, subcategories_Ids );
 
             var model = new SurveyViewModel
             {
                 SurveyDTOs = surveys,
                 CategoryId = Category,
-                SurveyId = surveys.Where(x => x.CategoryId == Category).FirstOrDefault().SurveyId
+                SurveyId = surveys.Where( x => x.CategoryId == Category ).FirstOrDefault().SurveyId
             };
 
-            return View("~/Views/Demanda/Survey.cshtml", model);
+            return View( "~/Views/Demanda/Survey.cshtml", model );
         }
 
-        private void renderSubCategory(int CategoryId, List<SurveyDTO> surveys, List<int> subcategories_Ids)
+        private void renderSubCategory( int CategoryId, List<SurveyDTO> surveys, List<int> subcategories_Ids )
         {
             //primero me agrego a mi mismo
             var survey = this.modelContext
                 .Surveys
-                .Include("Category")
-                .Include("Questions")
-                .Where(x => x.Category.Id == CategoryId)
-                .OrderByDescending(x => x.Id)
+                .Include( "Category" )
+                .Include( "Questions" )
+                .Where( x => x.Category.Id == CategoryId )
+                .OrderByDescending( x => x.Id )
                 .FirstOrDefault();
 
             var questions = survey.Questions
-                .Select(question => new SurveyQuestionDTO
+                .Select( question => new SurveyQuestionDTO
                 {
                     QuestionId = question.Id,
                     Question = question.DemandQuestion,
                     Required = question.DemandRequired,
                     Old = question.Old
-                })
+                } )
                 .ToList();
 
             ViewBag.QuestionCount += questions.Count();
@@ -105,28 +106,28 @@ namespace App.Controllers.Demanda
                 SurveyId = survey.Id
             };
 
-            surveys.Add(surveyDTO);
+            surveys.Add( surveyDTO );
 
             //busco las subSurveys de las subcategorias hijas y que estèn incluidas en el array de seleccioadas
             var subSurveys = this.modelContext
                 .Surveys
-                .Include("Category")
-                .Include("Questions")
-                .Where(x => x.Category.parentCategory.Id == CategoryId && subcategories_Ids.Contains(x.Category.Id)).ToList();
+                .Include( "Category" )
+                .Include( "Questions" )
+                .Where( x => x.Category.parentCategory.Id == CategoryId && subcategories_Ids.Contains( x.Category.Id ) ).ToList();
 
-            foreach (Survey subSurvey in subSurveys)
+            foreach( Survey subSurvey in subSurveys )
             {
-                renderSubCategory(subSurvey.Category.Id, surveys, subcategories_Ids);
+                renderSubCategory( subSurvey.Category.Id, surveys, subcategories_Ids );
             }
         }
 
-        public ActionResult Question(int id, int identifier)
+        public ActionResult Question( int id, int identifier )
         {
             var question = this.modelContext
                 .Questions
-                .Include("AnswerType")
-                .Include("Answers")
-                .Where(x => x.Id == id)
+                .Include( "AnswerType" )
+                .Include( "Answers" )
+                .Where( x => x.Id == id )
                 .FirstOrDefault();
 
             var model = new QuestionViewModel
@@ -136,73 +137,85 @@ namespace App.Controllers.Demanda
                 Question = question.DemandQuestion,
                 Required = question.DemandRequired,
                 Type = question.AnswerType.Name,
-                Answers = question.Answers.Select(answer => new AnswerDTO
+                Answers = question.Answers.Select( answer => new AnswerDTO
                 {
                     Id = answer.Id,
                     Answer = answer.DemandAnswer
-                })
+                } )
                     .ToList()
             };
 
             var view = "~/Views/Survey/Question/" + question.AnswerType.Name + ".cshtml";
 
-            return PartialView(view, model);
+            return PartialView( view, model );
         }
 
         [HttpPost]
-        [MultipleButton(Name = "action", Argument = "Save")]
-        public ActionResult Save(SurveyViewModel model, string Argument)
+        [MultipleButton( Name = "action", Argument = "Save" )]
+        public ActionResult Save( SurveyViewModel model, string Argument )
         {
-            var surveyCompletionParent = this.evaluationService.Save(model, false, User.Identity.GetUserId());
+            string sourceQueryStringKey = ConfigurationManager.AppSettings["UTMSource"];
+            if( Session[sourceQueryStringKey] != null )
+            {
+                model.Source = Session[sourceQueryStringKey].ToString();
+                Session[sourceQueryStringKey] = null;
+            }
+            var surveyCompletionParent = this.evaluationService.Save( model, false, User.Identity.GetUserId() );
 
             var surveyCompletion = this.modelContext
                 .SurveyCompletionParent
-                .FirstOrDefault(x => x.Id == surveyCompletionParent.Id);
+                .FirstOrDefault( x => x.Id == surveyCompletionParent.Id );
 
             var customer = this.modelContext
                 .Customers
-                .Where(x => x.Email == model.Email)
+                .Where( x => x.Email == model.Email )
                 .FirstOrDefault();
 
-            if (customer != null)
+            if( customer != null )
             {
                 surveyCompletion.Customer = customer;
                 this.modelContext.SaveChanges();
 
-                return RedirectToAction("Thanks", "../Evaluation", new { surveyCompletionId = surveyCompletionParent.Id });
+                return RedirectToAction( "Thanks", "../Evaluation", new { surveyCompletionId = surveyCompletionParent.Id } );
             }
 
-            return RedirectToAction("Registration", "../Evaluation", new { surveyCompletionParentId = surveyCompletionParent.Id });
+            return RedirectToAction( "Registration", "../Evaluation", new { surveyCompletionParentId = surveyCompletionParent.Id } );
         }
 
         [HttpPost]
-        [MultipleButton(Name = "action", Argument = "SaveParcial")]
-        public ActionResult SaveParcial(SurveyViewModel model, string Argument)
+        [MultipleButton( Name = "action", Argument = "SaveParcial" )]
+        public ActionResult SaveParcial( SurveyViewModel model, string Argument )
         {
-            var surveyCompletionParent = this.evaluationService.Save(model, true, User.Identity.GetUserId());
+            string sourceQueryStringKey = ConfigurationManager.AppSettings["UTMSource"];
+            if( Session[sourceQueryStringKey] != null )
+            {
+                model.Source = Session[sourceQueryStringKey].ToString();
+                Session[sourceQueryStringKey] = null;
+            }
+            var surveyCompletionParent = this.evaluationService.Save( model, true, User.Identity.GetUserId() );
 
             //Get email body
-            var link = this.sendEmailToContinueService.GetLink(surveyCompletionParent);
-            var body = this.RenderRazorViewToString("~/Views/Demanda/Continue/Email/Continue.cshtml", new ContinueViewModel { Link = link });
+            var link = this.sendEmailToContinueService.GetLink( surveyCompletionParent );
+            var body = this.RenderRazorViewToString( "~/Views/Demanda/Continue/Email/Continue.cshtml", new ContinueViewModel { Link = link } );
 
             //Generate PDF
-            var template = this.RenderRazorViewToString("~/Views/Demanda/Email/EvaluationTemplate.cshtml", surveyCompletionParent);
-            var fileName = this.pdfService.GetEvaluationFileName(surveyCompletionParent.Id);
-            var pdfFullName = this.pdfService.Generate(surveyCompletionParent.Id, template, fileName);
+            var template = this.RenderRazorViewToString( "~/Views/Demanda/Email/EvaluationTemplate.cshtml", surveyCompletionParent );
+            var fileName = this.pdfService.GetEvaluationFileName( surveyCompletionParent.Id );
+            var pdfFullName = this.pdfService.Generate( surveyCompletionParent.Id, template, fileName );
 
-            this.sendEmailToContinueService.Send(surveyCompletionParent.Email, body, pdfFullName);
+            this.sendEmailToContinueService.Send( surveyCompletionParent.Email, body, pdfFullName );
 
-            return RedirectToAction("ThanksPartial", "../Product/Evaluation");
+            return RedirectToAction( "ThanksPartial", "../Product/Evaluation" );
         }
 
-        private SurveyCompletionParent InsertSurveyCompletion(SurveyViewModel model, bool partial)
+        private SurveyCompletionParent InsertSurveyCompletion( SurveyViewModel model, bool partial )
         {
             var category = this.modelContext
                 .Categories
-                .Where(x => x.Id == model.CategoryId)
+                .Where( x => x.Id == model.CategoryId )
                 .FirstOrDefault();
 
-            var role = this.roleManager.FindByName("DEMANDA");
+            var role = this.roleManager.FindByName( "DEMANDA" );
 
             var surveyCompletionParent = new SurveyCompletionParent
             {
@@ -215,7 +228,7 @@ namespace App.Controllers.Demanda
                 PartialSaveKey = Guid.NewGuid().ToString()
             };
 
-            foreach (var survey in model.SurveyDTOs)
+            foreach( var survey in model.SurveyDTOs )
             {
                 var surveyCompletion = new SurveyCompletion
                 {
@@ -230,32 +243,32 @@ namespace App.Controllers.Demanda
 
                 var surveyQuestions = this.modelContext
                         .Questions
-                        .Include("Answers")
-                        .Where(x => x.Survey.Id == survey.SurveyId)
+                        .Include( "Answers" )
+                        .Where( x => x.Survey.Id == survey.SurveyId )
                         .ToList();
 
-                foreach (var question in model.surveyCompletionDTOs)
+                foreach( var question in model.surveyCompletionDTOs )
                 {
                     var answers = new List<SurveyCompletionAnswer>();
-                    if (question.SurveyId == survey.SurveyId)
+                    if( question.SurveyId == survey.SurveyId )
                     {
-                        if (question.Answers != null)
+                        if( question.Answers != null )
                         {
                             answers = surveyQuestions
-                                .Where(x => x.Id == question.QuestionId)
+                                .Where( x => x.Id == question.QuestionId )
                                 .FirstOrDefault()
                                 .Answers
-                                .Where(x => question.Answers.Contains(x.Id))
-                                .Select(x => new SurveyCompletionAnswer
+                                .Where( x => question.Answers.Contains( x.Id ) )
+                                .Select( x => new SurveyCompletionAnswer
                                 {
                                     Answer = x.DemandAnswer,
                                     AnswerValue = x.Value
-                                })
+                                } )
                                 .ToList();
                         }
 
                         string currentUserId = User.Identity.GetUserId();
-                        ApplicationUser currentUser = this.modelContext.Users.FirstOrDefault(x => x.Id == currentUserId);
+                        ApplicationUser currentUser = this.modelContext.Users.FirstOrDefault( x => x.Id == currentUserId );
 
                         var surveyCompletionQuestion = new SurveyCompletionQuestion
                         {
@@ -264,25 +277,25 @@ namespace App.Controllers.Demanda
                             Answers = answers
                         };
 
-                        surveyCompletion.Questions.Add(surveyCompletionQuestion);
+                        surveyCompletion.Questions.Add( surveyCompletionQuestion );
                     }
                 }
 
-                this.modelContext.SurveysCompletion.Add(surveyCompletion);
+                this.modelContext.SurveysCompletion.Add( surveyCompletion );
             }
 
-            this.modelContext.SurveyCompletionParent.Add(surveyCompletionParent);
+            this.modelContext.SurveyCompletionParent.Add( surveyCompletionParent );
             this.modelContext.SaveChanges();
 
             return surveyCompletionParent;
         }
 
         [HttpGet]
-        public ActionResult Registration(int surveyCompletionParentId)
+        public ActionResult Registration( int surveyCompletionParentId )
         {
             var survey = this.modelContext
                 .SurveyCompletionParent
-                .FirstOrDefault(x => x.Id == surveyCompletionParentId);
+                .FirstOrDefault( x => x.Id == surveyCompletionParentId );
 
             ViewBag.SurveyId = surveyCompletionParentId;
 
@@ -290,17 +303,17 @@ namespace App.Controllers.Demanda
 
             model.Email = survey.Email;
 
-            return View("~/Views/Demanda/Register.cshtml", model);
+            return View( "~/Views/Demanda/Register.cshtml", model );
         }
 
         [HttpPost]
-        public ActionResult Registration(int surveyId, RegisterViewModel registerViewModel)
+        public ActionResult Registration( int surveyId, RegisterViewModel registerViewModel )
         {
             var surveyCompletion = this.modelContext
                 .SurveyCompletionParent
-                .FirstOrDefault(x => x.Id == surveyId);
+                .FirstOrDefault( x => x.Id == surveyId );
 
-            var role = this.roleManager.FindByName("DEMANDA");
+            var role = this.roleManager.FindByName( "DEMANDA" );
 
             var customer = new Customer
             {
@@ -322,73 +335,73 @@ namespace App.Controllers.Demanda
                 Role = "DEMANDA"
             };
 
-            this.modelContext.Customers.Add(customer);
+            this.modelContext.Customers.Add( customer );
 
             surveyCompletion.Customer = customer;
 
             this.modelContext.SaveChanges();
 
-            return RedirectToAction("Thanks", "../Evaluation", new { surveyCompletionId = surveyId });
+            return RedirectToAction( "Thanks", "../Evaluation", new { surveyCompletionId = surveyId } );
         }
 
-        public ActionResult Thanks(int surveyCompletionId)
+        public ActionResult Thanks( int surveyCompletionId )
         {
             var rankingGenerated = this.modelContext
                 .Rankings
-                .Where(x => x.SurveyCompletionParentByDemanda.Id == surveyCompletionId)
+                .Where( x => x.SurveyCompletionParentByDemanda.Id == surveyCompletionId )
                 .Count() > 0;
 
-            if (!rankingGenerated)
+            if( !rankingGenerated )
             {
-                this.rankingService.GenerarRanking(surveyCompletionId);
+                this.rankingService.GenerarRanking( surveyCompletionId );
 
                 var surveyCompletionParent = this.modelContext
                     .SurveyCompletionParent
-                    .Include("SurveyCompletions")
-                    .Include("Company")
-                    .Include("Customer")
-                    .Include("Category")
-                    .Include("SurveyCompletions.Questions")
-                    .Include("SurveyCompletions.Questions.Answers")
-                    .Include("SurveyCompletions.CategoryObj")
-                    .Include("Product")
-                    .FirstOrDefault(x => x.Id == surveyCompletionId);
+                    .Include( "SurveyCompletions" )
+                    .Include( "Company" )
+                    .Include( "Customer" )
+                    .Include( "Category" )
+                    .Include( "SurveyCompletions.Questions" )
+                    .Include( "SurveyCompletions.Questions.Answers" )
+                    .Include( "SurveyCompletions.CategoryObj" )
+                    .Include( "Product" )
+                    .FirstOrDefault( x => x.Id == surveyCompletionId );
 
                 var category = this.modelContext
                     .Categories
-                    .FirstOrDefault(x => x.Id == surveyCompletionParent.Category.Id);
+                    .FirstOrDefault( x => x.Id == surveyCompletionParent.Category.Id );
 
                 var products = this.modelContext
                     .SurveyCompletionParent
-                    .Include("Product")
-                    .Include("Product.Company")
-                    .Include("Role")
-                    .Where(x =>
-                        x.Category.Id == category.Id
-                        && x.Role.Name == "OFERTA"
-                        && x.Status == "Aprobado"
-                        && x.DeletedAt == null)
-                    .Select(x => new EvaluationReportProductDTO
+                    .Include( "Product" )
+                    .Include( "Product.Company" )
+                    .Include( "Role" )
+                    .Where( x =>
+                         x.Category.Id == category.Id
+                         && x.Role.Name == "OFERTA"
+                         && x.Status == "Aprobado"
+                         && x.DeletedAt == null )
+                    .Select( x => new EvaluationReportProductDTO
                     {
                         ProductName = x.Product.Name,
                         CompanyName = x.Product.Company.CompanyName,
                         CompanyWebSite = x.Product.Company.CompanyWebSite
-                    })
+                    } )
                     //.OrderBy(x => x.Product.Name)
                     .ToList();
 
                 var ranking = this.modelContext
                     .Rankings
-                    .Include("SurveyCompletionSupply.Company")
-                    .Where(x => x.SurveyCompletionParentByDemanda.Id == surveyCompletionId)
-                    .OrderByDescending(x => x.Rank)
-                    .Take(10)
-                    .Select(x => new EvaluationReportRankingDTO
+                    .Include( "SurveyCompletionSupply.Company" )
+                    .Where( x => x.SurveyCompletionParentByDemanda.Id == surveyCompletionId )
+                    .OrderByDescending( x => x.Rank )
+                    .Take( 10 )
+                    .Select( x => new EvaluationReportRankingDTO
                     {
                         CompanyName = x.SurveyCompletionParentByOferta.Company.CompanyName,
                         ProductName = x.SurveyCompletionParentByOferta.Product.Name,
                         Ranking = x.Rank
-                    })
+                    } )
                     .ToList();
 
                 var model = new EvaluationReportTemplateDTO
@@ -402,64 +415,64 @@ namespace App.Controllers.Demanda
                 String template = "";
 
                 //Si no hay productos muestro el reporte vacío
-                if (products.Count > 0)
+                if( products.Count > 0 )
                 {
-                    template = this.RenderRazorViewToString("~/Views/Demanda/Email/EvaluationReportTemplate.cshtml", model);
+                    template = this.RenderRazorViewToString( "~/Views/Demanda/Email/EvaluationReportTemplate.cshtml", model );
                 }
                 else
                 {
-                    template = this.RenderRazorViewToString("~/Views/Demanda/Email/EvaluationEmptyReportTemplate.cshtml", model);
+                    template = this.RenderRazorViewToString( "~/Views/Demanda/Email/EvaluationEmptyReportTemplate.cshtml", model );
                 }
 
-                var fileName = this.pdfService.GetEvaluationReportFileName(surveyCompletionParent.Id);
-                var pdfFullName = this.pdfService.Generate(surveyCompletionId, template, fileName);
+                var fileName = this.pdfService.GetEvaluationReportFileName( surveyCompletionParent.Id );
+                var pdfFullName = this.pdfService.Generate( surveyCompletionId, template, fileName );
 
-                this.surveyCompletionByDemandEmailService.Send(pdfFullName, surveyCompletionParent.Customer);
+                this.surveyCompletionByDemandEmailService.Send( pdfFullName, surveyCompletionParent.Customer );
 
-                return View("~/Views/Survey/Thanks.cshtml");
+                return View( "~/Views/Survey/Thanks.cshtml" );
             }
 
-            return View("~/Views/Survey/Thanks.cshtml");
+            return View( "~/Views/Survey/Thanks.cshtml" );
         }
 
-        private string RenderRazorViewToString(string viewName, object model)
+        private string RenderRazorViewToString( string viewName, object model )
         {
             ViewData.Model = model;
-            using (var sw = new StringWriter())
+            using( var sw = new StringWriter() )
             {
                 var viewResult = ViewEngines.Engines.FindPartialView(
                     ControllerContext,
-                    viewName);
+                    viewName );
 
                 var viewContext = new ViewContext(
                     ControllerContext,
                     viewResult.View,
                     ViewData,
                     TempData,
-                    sw);
+                    sw );
 
-                viewResult.View.Render(viewContext, sw);
-                viewResult.ViewEngine.ReleaseView(ControllerContext, viewResult.View);
+                viewResult.View.Render( viewContext, sw );
+                viewResult.ViewEngine.ReleaseView( ControllerContext, viewResult.View );
                 return sw.GetStringBuilder().ToString();
             }
         }
 
-        private SurveyDTO GetSurveyDTO(int categoryId)
+        private SurveyDTO GetSurveyDTO( int categoryId )
         {
             var survey = this.modelContext
                 .Surveys
-                .Include("Category")
-                .Include("Questions")
-                .Where(x => x.Category.Id == categoryId)
-                .OrderByDescending(x => x.Id)
+                .Include( "Category" )
+                .Include( "Questions" )
+                .Where( x => x.Category.Id == categoryId )
+                .OrderByDescending( x => x.Id )
                 .FirstOrDefault();
 
             var questions = survey.Questions
-                .Select(question => new SurveyQuestionDTO
+                .Select( question => new SurveyQuestionDTO
                 {
                     QuestionId = question.Id,
                     Question = question.DemandQuestion
-                })
+                } )
                 .ToList();
 
             var surveyDTO = new SurveyDTO

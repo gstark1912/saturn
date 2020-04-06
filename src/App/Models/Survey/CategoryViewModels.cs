@@ -5,15 +5,16 @@ namespace App.Models.Survey
 {
     public class CategoryViewModel
     {
-        public CategoryViewModel() 
+        public CategoryViewModel()
         {
             this.Categories = new List<System.Web.Mvc.SelectListItem>();
         }
 
-        [Display(Name = "Rubro")]
+        [Display( Name = "Rubro" )]
         [Required]
         public string Category { get; set; }
 
         public List<System.Web.Mvc.SelectListItem> Categories { get; set; }
+        public string SelectedCategory { get; internal set; }
     }
 }

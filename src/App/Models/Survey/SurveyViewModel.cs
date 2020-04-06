@@ -21,35 +21,36 @@ namespace App.Models.Survey
         public int ParentSurveyCompletionId { get; set; }
         public string PartialSaveKey { get; set; }
         public int SurveyCompletionId { get; set; }
+        public string Source { get; set; }
 
         //cosass del productoo
         public int ProductId { get; set; }
 
         [Required]
-        [Display(Name = "Nombre")]
+        [Display( Name = "Nombre" )]
         public string ProductName { get; set; }
 
-        [Display(Name = "Version")]
+        [Display( Name = "Version" )]
         public string ProductVersion { get; set; }
 
         [Required]
-        [Display(Name = "Descripción")]
+        [Display( Name = "Descripción" )]
         public string ProductDescription { get; set; }
 
-        [Display(Name = "Web Site")]
+        [Display( Name = "Web Site" )]
         public string ProductWebSite { get; set; }
 
-        [Display(Name = "Nombre y Apellido")]
+        [Display( Name = "Nombre y Apellido" )]
         public string ProductContactFullName { get; set; }
 
-        [Display(Name = "Cargo / Función")]
+        [Display( Name = "Cargo / Función" )]
         public string ProductContactPosition { get; set; }
 
-        [Display(Name = "Teléfono")]
+        [Display( Name = "Teléfono" )]
         public string ProductContactPhone { get; set; }
 
         [EmailAddress]
-        [Display(Name = "Email")]
+        [Display( Name = "Email" )]
         public string ProductContactEmail { get; set; }
     }
 }

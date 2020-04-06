@@ -14,10 +14,10 @@ namespace Model.SurveyCompletion
             this.CreatedAt = DateTime.Now;
         }
 
-        public SurveyCompletionParent(Company company) : this()
+        public SurveyCompletionParent( Company company ) : this()
         {
             this.Company = company;
-            this.PartialSaveKey = this.Identifier.GetHashCode().ToString("x");
+            this.PartialSaveKey = this.Identifier.GetHashCode().ToString( "x" );
         }
 
         public int Id { get; set; }
@@ -36,6 +36,7 @@ namespace Model.SurveyCompletion
         public DateTime? CompleteReminderSentAt { get; set; }
         public DateTime? UpdateReminderSentAt { get; set; }
         public int PartialSaveReminderCount { get; set; }
+        public string Source { get; set; }
 
         public string Identifier
         {
@@ -50,17 +51,17 @@ namespace Model.SurveyCompletion
 
                 var surveyId = this.Id.ToString();
 
-                while (customerId.Length < 4)
+                while( customerId.Length < 4 )
                 {
                     customerId = "0" + customerId;
                 }
 
-                while (surveyId.Length < 4)
+                while( surveyId.Length < 4 )
                 {
                     surveyId = "0" + surveyId;
                 }
 
-                return this.CreatedAt.ToString("yyyyMMdd") + "-" + customerId + "-" + surveyId;
+                return this.CreatedAt.ToString( "yyyyMMdd" ) + "-" + customerId + "-" + surveyId;
             }
         }
     }
