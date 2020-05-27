@@ -313,11 +313,12 @@ namespace App.Controllers
         [AllowAnonymous]
         public ActionResult ConfirmEmail(string userId, string code)
         {
+            code = string.Join("",code.Split( ' ' ));
             ApplicationUser user = this.modelContext
                 .Users
-                .FirstOrDefault(x => x.EmailConfirmed == false && x.confirmToken == code);
+                .FirstOrDefault(x =>  userId == x.Id  );
 
-            if (user == null)
+            if( user == null || string.Join("",user.confirmToken.Split('+')) != code)
             {
                 return View("Error");
             }
