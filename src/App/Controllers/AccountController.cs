@@ -313,12 +313,13 @@ namespace App.Controllers
         [AllowAnonymous]
         public ActionResult ConfirmEmail(string userId, string code)
         {
-            code = string.Join("",code.Split( ' ' ));
+            // En algunos casos el código se manda mal por queryString, hay que ver como solucionar esto correctamente.
+            var parsedCode = string.Join("",code.Split( ' ' ));
             ApplicationUser user = this.modelContext
                 .Users
                 .FirstOrDefault(x =>  userId == x.Id  );
 
-            if( user == null || string.Join("",user.confirmToken.Split('+')) != code)
+            if( user == null || (string.Join("",user.confirmToken.Split('+')) != parsedCode && user.confirmToken != code))
             {
                 return View("Error");
             }
