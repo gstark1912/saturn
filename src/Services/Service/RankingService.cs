@@ -4,6 +4,7 @@ using Model.SurveyCompletion;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 
 namespace Services
@@ -18,7 +19,7 @@ namespace Services
             this.modelContext = new ModelContext();
         }
 
-        public void GenerarRanking(int surveyCompletionId)
+        public Task GenerarRanking(int surveyCompletionId)
         {
             var parentSurveyCompletionByDemanda = this.modelContext
                 .SurveyCompletionParent
@@ -144,6 +145,8 @@ namespace Services
 
             this.modelContext.Rankings.AddRange(rankings);
             this.modelContext.SaveChanges();
+
+            return Task.FromResult(true);
         }
 
         public int getRankingValue(int demandAnswer, int supplyAnswer)

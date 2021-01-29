@@ -31,6 +31,7 @@ namespace Model.Context
             //              UPDATE USERS SET Enabled = 1, EmailConfirmed = 1;");
 
             this.Configuration.LazyLoadingEnabled = false;
+            this.Database.CommandTimeout = 500;
         }
 
         protected override void OnModelCreating( System.Data.Entity.DbModelBuilder modelBuilder )
